@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { api, setToken } from '../api'
 import { Spinner } from '../components/bits'
 
-export default function AuthModal({ onClose, onDone }: { onClose: () => void; onDone: () => void }) {
-  const [mode, setMode] = useState<'login' | 'register'>('register')
+export default function AuthModal({ onClose, onDone, initialMode = 'register' }: { onClose: () => void; onDone: () => void; initialMode?: 'login' | 'register' }) {
+  const [mode, setMode] = useState<'login' | 'register'>(initialMode)
   const [username, setUsername] = useState('')
   const [pin, setPin] = useState('')
   const [busy, setBusy] = useState(false)

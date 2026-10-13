@@ -9,6 +9,7 @@ import MyEdge from './pages/MyEdge'
 import Practice from './pages/Practice'
 import Ranks from './pages/Ranks'
 import TodayPage from './pages/Today'
+import Welcome from './pages/Welcome'
 
 const PAGES = [
   { id: 'today', label: 'Today', icon: 'M4 13h4v7H4zM10 8h4v12h-4zM16 4h4v16h-4z' },
@@ -36,25 +37,30 @@ export default function App() {
   const [page, setPage] = useState<PageId>(pageFromHash)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [rules, setRules] = useState<Rule[]>([])
-  const [authOpen, setAuthOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState<false | 'register' | 'login'>(false)
+  const [checked, setChecked] = useState(false)
+  const [hasHash, setHasHash] = useState(() => window.location.hash.length > 1)
 
   const refresh = useCallback(async () => {
-    if (!getToken()) { setProfile(null); setRules([]); return }
+    if (!getToken()) { setProfile(null); setRules([]); setChecked(true); return }
     try {
       const [p, r] = await Promise.all([api<Profile>('/api/me'), api<Rule[]>('/api/rules')])
       setProfile(p); setRules(r)
     } catch { setToken(null); setProfile(null); setRules([]) }
+    setChecked(true)
   }, [])
 
   useEffect(() => { void refresh() }, [refresh])
   useEffect(() => {
-    const on = () => setPage(pageFromHash())
+    const on = () => { setPage(pageFromHash()); setHasHash(window.location.hash.length > 1) }
     window.addEventListener('hashchange', on)
     return () => window.removeEventListener('hashchange', on)
   }, [])
 
-  const go = (id: PageId) => { window.location.hash = id; setPage(id); window.scrollTo(0, 0) }
-  const session: Session = { profile, rules, refresh, needLogin: () => setAuthOpen(true) }
+  const go = (id: PageId) => { window.location.hash = id; setPage(id); setHasHash(true); window.scrollTo(0, 0) }
+  const session: Session = { profile, rules, refresh, needLogin: () => setAuthOpen('register') }
+  // First visit, logged out, no deep link: show the welcome screen instead of the game.
+  const welcome = checked && !profile && !hasHash
 
   async function logout() {
     try { await api('/api/logout', { method: 'POST' }) } catch { /* ignore */ }
@@ -86,18 +92,19 @@ export default function App() {
               <button className="btn ghost small hide-sm" onClick={logout}>Log out</button>
             </div>
           ) : (
-            <button className="btn primary small" onClick={() => setAuthOpen(true)}>Log in / Join</button>
+            <button className="btn primary small" onClick={() => setAuthOpen('login')}>Log in</button>
           )}
         </div>
       </header>
 
-      <main className="page">
-        {page === 'today' && <TodayPage s={session} />}
-        {page === 'practice' && <Practice s={session} />}
-        {page === 'edge' && <MyEdge s={session} />}
-        {page === 'ranks' && <Ranks s={session} />}
-        {page === 'community' && <Community s={session} />}
-        {page === 'engine' && <Engine s={session} />}
+      <main className={welcome ? 'page wpage' : 'page'}>
+        {welcome && <Welcome onStart={() => setAuthOpen('register')} onLogin={() => setAuthOpen('login')} onPeek={() => go('today')} />}
+        {!welcome && page === 'today' && <TodayPage s={session} />}
+        {!welcome && page === 'practice' && <Practice s={session} />}
+        {!welcome && page === 'edge' && <MyEdge s={session} />}
+        {!welcome && page === 'ranks' && <Ranks s={session} />}
+        {!welcome && page === 'community' && <Community s={session} />}
+        {!welcome && page === 'engine' && <Engine s={session} />}
       </main>
 
       <footer className="footer">
@@ -105,16 +112,17 @@ export default function App() {
         Market data: Yahoo Finance via yfinance. News: publisher RSS feeds and Google News. AI: gpt-6-luna.
       </footer>
 
-      <nav className="tabbar" aria-label="Main (mobile)">
+      {!welcome && <nav className="tabbar" aria-label="Main (mobile)">
         {PAGES.slice(0, 5).map(p => (
           <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => go(p.id)} aria-current={page === p.id ? 'page' : undefined}>
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={p.icon} fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" /></svg>
             <span>{p.label}</span>
           </button>
         ))}
-      </nav>
+      </nav>}
 
-      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} onDone={async () => { setAuthOpen(false); await refresh() }} />}
+      {authOpen && <AuthModal initialMode={authOpen} onClose={() => setAuthOpen(false)}
+        onDone={async () => { setAuthOpen(false); await refresh(); go(page) }} />}
     </>
   )
 }
