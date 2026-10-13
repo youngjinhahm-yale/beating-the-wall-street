@@ -1,0 +1,14 @@
+pydantic-ai-slim[openai,mcp]==2.55.0
+openai==3.29.0
+fastmcp==4.1.0
+fastapi==0.143.0
+uvicorn[standard]==0.54.0
+python-dotenv==1.2.4
+yfinance==1.7.0
+pandas==3.0.6
+feedparser==6.0.14
+requests==2.34.2
+APScheduler==3.11.3
+tzdata==2026.5
+pytest==9.1.1
+httpx==0.28.1

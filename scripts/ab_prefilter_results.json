@@ -1,0 +1,90 @@
+[
+  {
+    "day": "2026-09-29",
+    "prefilter": true,
+    "headlines_to_scout": 24,
+    "input": 10364,
+    "cached": 4962,
+    "output": 3309,
+    "cost": 0.002325295,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "Fed minutes and discussion of 10-year Treasury yields",
+      "Stitch Fix guidance and turnaround outlook",
+      "Iran war and energy-market developments"
+    ],
+    "scout_topics": [
+      "Fed minutes and rising Treasury yields",
+      "Iran war uncertainty and crude oil prices",
+      "Stitch Fix guidance and turnaround outlook"
+    ]
+  },
+  {
+    "day": "2026-09-29",
+    "prefilter": false,
+    "headlines_to_scout": 30,
+    "input": 11554,
+    "cached": 4110,
+    "output": 3510,
+    "cost": 0.002674325,
+    "cards_drafted": 4,
+    "cards_passed": 2,
+    "published": [
+      "Iran conflict and energy-market strategy",
+      "Amphenol Q2 earnings coverage"
+    ],
+    "scout_topics": [
+      "Fed minutes and rising Treasury yields",
+      "Iran-war uncertainty and oil-market disruption",
+      "Amphenol Q2 earnings coverage"
+    ]
+  },
+  {
+    "day": "2026-09-30",
+    "prefilter": true,
+    "headlines_to_scout": 19,
+    "input": 8201,
+    "cached": 5030,
+    "output": 2171,
+    "cost": 0.00149835,
+    "cards_drafted": 3,
+    "cards_passed": 3,
+    "published": [
+      "Conference Board consumer confidence report",
+      "Carnival earnings, bookings and guidance update",
+      "Fluence Energy securities class action"
+    ],
+    "scout_topics": [
+      "U.S. consumer confidence weakens",
+      "Fed Bowman remarks and JOLTS labor data",
+      "Carnival reports record bookings and raises guidance",
+      "Fluence Energy faces securities class action"
+    ]
+  },
+  {
+    "day": "2026-09-30",
+    "prefilter": false,
+    "headlines_to_scout": 24,
+    "input": 9506,
+    "cached": 2853,
+    "output": 2553,
+    "cost": 0.002124055,
+    "cards_drafted": 5,
+    "cards_passed": 5,
+    "published": [
+      "Fed inflation measure scheduled for Wednesday",
+      "U.S. restrictions on Canadian imports take effect",
+      "Middle East crude exports reported at 98% of pre-war levels",
+      "Consumer confidence index reaches its lowest level since 2014",
+      "Carnival reports record bookings and updates guidance"
+    ],
+    "scout_topics": [
+      "Fed\u2019s preferred inflation measure due Wednesday",
+      "U.S. restrictions on Canadian imports take effect",
+      "Middle East crude exports reported near pre-war levels",
+      "Consumer confidence falls to its lowest level since 2014",
+      "Carnival reports record bookings and raises guidance"
+    ]
+  }
+]

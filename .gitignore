@@ -1,0 +1,26 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# node (frontend/dist IS committed so the app runs with Python only)
+frontend/node_modules/
+frontend/node_modules/.tmp/
+
+# local data (sample.db is committed; your live game is not)
+data/live.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# editor / os
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
