@@ -22,8 +22,8 @@ export default function Practice({ s }: { s: Session }) {
   useEffect(() => { void load() }, [load])
 
   if (!s.profile) return (
-    <div className="panel empty"><h2>Practice on real market history</h2>
-      <p>Replay past cards and Inflection moments - real headlines that hit right before the index turned sharply.</p>
+    <div className="panel empty"><h2>Play past rounds</h2>
+      <p>Real cards. Instant results.</p>
       <button className="btn primary" onClick={s.needLogin}>Log in to play</button></div>
   )
 
@@ -42,14 +42,14 @@ export default function Practice({ s }: { s: Session }) {
       <div className="page-head">
         <div>
           <h1>Replay</h1>
-          <div className="muted">Unlimited practice on settled history. Instant results, 1/3 of live LP, no points at risk.</div>
+          <div className="muted">Play past rounds. Instant results.</div>
         </div>
         <div className="row">
           <span className="pill">{done} replayed</span>
           <div className="tabs">
             {(['all', 'inflection', 'daily'] as const).map(f => (
               <button key={f} className={filter === f ? 'active' : ''} onClick={() => setFilter(f)}>
-                {f === 'all' ? 'All' : f === 'inflection' ? 'Inflection moments' : 'Past daily cards'}</button>
+                {f === 'all' ? 'All' : f === 'inflection' ? 'Big moves' : 'Daily'}</button>
             ))}
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function Practice({ s }: { s: Session }) {
       )}
 
       {!cards && <div className="empty"><Spinner /></div>}
-      {cards && shown.length === 0 && <div className="panel empty"><h2>You've replayed everything here</h2><p>New cards arrive after every trading day.</p></div>}
+      {cards && shown.length === 0 && <div className="panel empty"><h2>All caught up</h2><p>New cards after every trading day.</p></div>}
       <div className="grid cards">
         {shown.slice(0, 12).map(c => (
           <CardView key={c.id} card={c} rules={s.rules} loggedIn onNeedLogin={s.needLogin} onChanged={() => onAnswered(c.id)} onRuleSaved={s.refresh} />

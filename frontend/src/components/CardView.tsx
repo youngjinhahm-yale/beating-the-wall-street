@@ -70,7 +70,7 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
         <div className="row"><CategoryPill c={card.category} /><span className="ticker">{card.ticker}</span></div>
         {card.mode === 'live' && !myBet && <span className="status live"><span className="dot pulse" />Open</span>}
         {card.mode === 'locked' && <span className="status locked">Locked</span>}
-        {practice && !myBet && <span className="status practice">{card.kind === 'inflection' ? 'Inflection replay' : 'Replay'}</span>}
+        {practice && !myBet && <span className="status practice">{card.kind === 'inflection' ? 'Big move' : 'Replay'}</span>}
       </div>
 
       <div className="title" id={`card-${card.id}`}>{card.title}</div>

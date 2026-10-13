@@ -48,7 +48,6 @@ function Composer({ s, parent, category, cardId, onDone, insight }: {
         )}
         <button className="btn primary small" disabled={busy || body.trim().length < 3 || (insight && title.trim().length < 3)}>
           {busy ? <Spinner /> : insight ? 'Post insight' : parent ? 'Reply' : 'Comment'}</button>
-        <span className="faint">Every post is checked by a safety filter and an AI moderator.</span>
       </div>
       {msg && <div className={`notice ${msg.kind}`} role="status">{msg.text}</div>}
     </form>
@@ -132,7 +131,7 @@ export default function Community({ s }: { s: Session }) {
   return (
     <>
       <div className="page-head">
-        <div><h1>Community</h1><div className="muted">Comment after your first call. Gold+ players post insights.</div></div>
+        <div><h1>Community</h1><div className="muted">Talk about today's calls.</div></div>
         <div className="row">
           <button className="btn" onClick={() => setCompose(c => c === 'comment' ? null : 'comment')}>Comment</button>
           <button className="btn primary" onClick={() => setCompose(c => c === 'insight' ? null : 'insight')}>New insight</button>
@@ -154,7 +153,7 @@ export default function Community({ s }: { s: Session }) {
       </div>
 
       {!list && <div className="empty"><Spinner /></div>}
-      {list && list.length === 0 && <div className="panel empty"><h2>No threads yet</h2><p>Be the first to share how you read today's news.</p></div>}
+      {list && list.length === 0 && <div className="panel empty"><h2>No posts yet</h2><p>Be the first.</p></div>}
       <div className="stack">
         {list?.map(p => (
           <div key={p.id} className="panel" style={{ cursor: 'pointer' }} onClick={() => openThread(p.id)} role="button" tabIndex={0}
