@@ -25,7 +25,8 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
   const [err, setErr] = useState<string | null>(null)
   const [coach, setCoach] = useState<{ feedback: string; suggested_rule: string } | null>(null)
   const [saved, setSaved] = useState<string[]>([])
-  const [open, setOpen] = useState<'why' | 'sources' | null>(null)
+  const [open, setOpen] = useState<'why' | null>(null)
+  const [showReason, setShowReason] = useState(false)
 
   const myBet = card.my_bet
   const practice = card.mode === 'practice'
@@ -89,8 +90,9 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
           const cls = ['pick', d, chosen === d ? 'sel' : '', isOutcome ? 'outcome' : ''].join(' ')
           return (
             <button key={d} className={cls} disabled={!canBet} onClick={() => setPick(d)} role="radio" aria-checked={chosen === d}>
-              <span className="pick-name">{ICON[d]} {NAME[d]}{d === 'flat' && <span className="pick-band">±{card.flat_band}%</span>}</span>
+              <span className="pick-name">{ICON[d]} {NAME[d]}</span>
               <span className="pick-odds">{Math.round(share(d) * 100)}%{mult(d) ? ` · ${mult(d)}x` : ''}</span>
+              <span className="pick-band">{d === 'flat' ? `±${card.flat_band}%` : d === 'up' ? `> +${card.flat_band}%` : `< −${card.flat_band}%`}</span>
             </button>
           )
         })}
@@ -104,17 +106,23 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
               <span className="mono stake">{stake} pts</span>
             </div>
           )}
-          {myRules.length > 0 && (
-            <select value={ruleId ?? ''} aria-label="Use a rule from your rulebook" onChange={e => {
-              const id = e.target.value ? +e.target.value : null
-              setRuleId(id); const r = rules.find(x => x.id === id); if (r) setReason(r.text)
-            }}>
-              <option value="">Use one of my rules…</option>
-              {myRules.map(r => <option key={r.id} value={r.id}>{r.text}{r.uses ? ` (${r.wins}/${r.uses})` : ''}</option>)}
-            </select>
+          {!showReason ? (
+            <button className="link" style={{ alignSelf: 'flex-start' }} onClick={() => setShowReason(true)}>+ Add a reason (optional)</button>
+          ) : (
+            <>
+              {myRules.length > 0 && (
+                <select value={ruleId ?? ''} aria-label="Use a rule from your rulebook" onChange={e => {
+                  const id = e.target.value ? +e.target.value : null
+                  setRuleId(id); const r = rules.find(x => x.id === id); if (r) setReason(r.text)
+                }}>
+                  <option value="">Use one of my rules…</option>
+                  {myRules.map(r => <option key={r.id} value={r.id}>{r.text}{r.uses ? ` (${r.wins}/${r.uses})` : ''}</option>)}
+                </select>
+              )}
+              <input autoFocus placeholder="Why? (optional)" value={reason} maxLength={280} aria-label="Reason"
+                onChange={e => { setReason(e.target.value); if (ruleId) setRuleId(null) }} />
+            </>
           )}
-          <input placeholder="Why? (one line)" value={reason} maxLength={280} aria-label="Reason"
-            onChange={e => { setReason(e.target.value); if (ruleId) setRuleId(null) }} />
           <button className="btn primary block" onClick={submit} disabled={busy}>
             {busy ? <Spinner /> : practice ? 'Reveal' : pick ? `Bet ${stake} on ${NAME[pick]}` : 'Pick a side'}
           </button>
@@ -164,19 +172,12 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
           {pm.why && <div className="muted">{pm.why}</div>}
         </div>
       )}
-      {open === 'sources' && (
-        <div className="sources">
-          {card.sources.map((s, i) => <a key={i} href={s.url} target="_blank" rel="noreferrer noopener">{s.source}: {s.title}</a>)}
-        </div>
-      )}
-
       {err && <div className="notice error" role="alert">{err}</div>}
 
-      <div className="cardfoot">
+      {(myBet && settled && pm) || (won === false && !coach) ? <div className="cardfoot">
         {myBet && settled && pm && <button className="link" onClick={() => setOpen(o => o === 'why' ? null : 'why')}>{open === 'why' ? 'Hide why' : 'Why it moved'}</button>}
         {won === false && !coach && <button className="link" onClick={askCoach} disabled={busy}>Ask Coach</button>}
-        {card.sources.length > 0 && <button className="link" onClick={() => setOpen(o => o === 'sources' ? null : 'sources')}>{open === 'sources' ? 'Hide sources' : `Sources (${card.sources.length})`}</button>}
-      </div>
+      </div> : null}
     </article>
   )
 }

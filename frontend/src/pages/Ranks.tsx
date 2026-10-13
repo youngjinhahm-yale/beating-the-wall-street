@@ -17,11 +17,11 @@ export default function Ranks({ s }: { s: Session }) {
   return (
     <>
       <div className="page-head">
-        <div><h1>Ranks</h1><div className="muted">A separate tier in each kind of news, so you know where your edge really is.</div></div>
+        <div><h1>Ranks</h1><div className="muted">Your tier in each kind of news.</div></div>
       </div>
 
       {s.profile && (
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginBottom: 18 }}>
+        <div className="grid tiers" style={{ marginBottom: 18 }}>
           {s.profile.categories.map(c => {
             const next = LADDER.find(([, need]) => need !== null && need > c.lp)
             const prevNeed = [...LADDER].reverse().find(([, need]) => need !== null && need <= c.lp)?.[1] ?? 0
@@ -32,7 +32,7 @@ export default function Ranks({ s }: { s: Session }) {
                   <span className="faint mono">{c.wins}-{c.losses}</span></div>
                 <TierBadge tier={c.tier} size={30} big />
                 {c.placement_left > 0
-                  ? <div className="faint">{c.placement_left} more call{c.placement_left === 1 ? '' : 's'} to finish placement</div>
+                  ? <div className="faint">{c.placement_left} call{c.placement_left === 1 ? '' : 's'} to rank</div>
                   : <>
                       <div className="bar"><div style={{ width: `${pct}%` }} /></div>
                       <div className="faint mono">{c.lp.toFixed(0)} LP{next ? ` · ${(next[1] as number) - Math.floor(c.lp)} to ${next[0]}` : ''}</div>
@@ -45,7 +45,7 @@ export default function Ranks({ s }: { s: Session }) {
 
       <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', alignItems: 'start' }}>
         <section className="panel">
-          <div className="spread wrap" style={{ marginBottom: 12 }}>
+          <div className="stack" style={{ marginBottom: 12, gap: 8 }}>
             <h2>Leaderboard</h2>
             <div className="tabs">
               <button className={cat === '' ? 'active' : ''} onClick={() => setCat('')}>Overall</button>
@@ -54,7 +54,7 @@ export default function Ranks({ s }: { s: Session }) {
           </div>
           <div className="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Player</th><th>Tier</th><th className="num">LP</th><th className="num">W-L</th></tr></thead>
+              <thead><tr><th>#</th><th>Player</th><th>Tier</th><th className="num">LP</th><th className="num">W–L</th></tr></thead>
               <tbody>
                 {rows.map((r, i) => (
                   <tr key={r.user_id} style={r.user_id === s.profile?.id ? { background: 'var(--panel-2)' } : undefined}>

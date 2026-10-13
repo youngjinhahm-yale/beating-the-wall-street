@@ -132,7 +132,7 @@ export default function Community({ s }: { s: Session }) {
   return (
     <>
       <div className="page-head">
-        <div><h1>Community</h1><div className="muted">Anyone who has settled a call can comment. Only players at Gold or above in a category can start an insight thread there.</div></div>
+        <div><h1>Community</h1><div className="muted">Comment after your first call. Gold+ players post insights.</div></div>
         <div className="row">
           <button className="btn" onClick={() => setCompose(c => c === 'comment' ? null : 'comment')}>Comment</button>
           <button className="btn primary" onClick={() => setCompose(c => c === 'insight' ? null : 'insight')}>New insight</button>

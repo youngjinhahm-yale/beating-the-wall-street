@@ -95,13 +95,13 @@ def test_void_refunds(con):
 def test_rules_enforced(con):
     a = _user(con, "erin")
     rid, cid = _round(con)
-    with pytest.raises(game.GameError, match="reason"):
-        game.place_bet(con, a, cid, "up", 50, "")
+    with pytest.raises(game.GameError, match="280"):
+        game.place_bet(con, a, cid, "up", 50, "x" * 300)
     with pytest.raises(game.GameError, match="Stake"):
         game.place_bet(con, a, cid, "up", 500, "too big")
     with pytest.raises(game.GameError, match="Pick"):
         game.place_bet(con, a, cid, "sideways", 50, "bad pick")
-    game.place_bet(con, a, cid, "up", 50, "fine")
+    game.place_bet(con, a, cid, "up", 50, "")  # a reason is optional
     with pytest.raises(game.GameError, match="already"):
         game.place_bet(con, a, cid, "down", 50, "again")
 

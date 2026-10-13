@@ -398,7 +398,8 @@ async def coach_bet(bet_id: int, user_id: int) -> dict:
     h = await hub()
     facts = {"card": {k: card[k] for k in ("title", "summary", "ticker_name", "move_pct", "flat_band", "outcome")},
              "post_mortem": loads(card["post_mortem"], {}), "player_pick": bet["direction"]}
-    prompt = (f"{dumps(facts)}\n\n" + safety.quote_untrusted("PLAYER REASON", [{"reason": bet["reason"]}], ["reason"]))
+    reason = bet["reason"] or "(the player gave no reason)"
+    prompt = (f"{dumps(facts)}\n\n" + safety.quote_untrusted("PLAYER REASON", [{"reason": reason}], ["reason"]))
     note, _ = await run_agent(h.agents["coach_personal"], "coach_personal", prompt, user_id=user_id)
     data = note.model_dump()
     with connect() as con:

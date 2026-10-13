@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Session } from '../App'
 import type { Direction } from '../api'
-import { api, CATEGORIES, CATEGORY_LABEL, fmtPct } from '../api'
+import { api, CATEGORIES, CATEGORY_LABEL, fmtPct, setToken } from '../api'
 import { CategoryPill, DirPill } from '../components/bits'
 
 interface JournalRow {
@@ -37,7 +37,8 @@ export default function MyEdge({ s }: { s: Session }) {
   return (
     <>
       <div className="page-head">
-        <div><h1>My Edge</h1><div className="muted">Institutions win with written rules that get tested. Build yours here.</div></div>
+        <div><h1>My Edge</h1><div className="muted">Your rules and your record.</div>
+          <button className="link show-sm" style={{ marginTop: 6 }} onClick={async () => { await api('/api/logout', { method: 'POST' }).catch(() => {}); setToken(null); await s.refresh() }}>Log out</button></div>
       </div>
 
       <div className="panel" style={{ marginBottom: 18 }}>
@@ -53,9 +54,9 @@ export default function MyEdge({ s }: { s: Session }) {
 
       <div className="grid two">
         <section className="panel stack">
-          <div className="spread"><h2>Rulebook</h2><span className="faint">Win rate = calls that used the rule and were right</span></div>
+          <h2>Rulebook</h2>
           <form className="stack" onSubmit={addRule}>
-            <input placeholder='e.g. "If CPI beats forecasts, expect Nasdaq to lag the Dow"' value={text} onChange={e => setText(e.target.value)} maxLength={200} aria-label="New rule" />
+            <input placeholder='New rule, e.g. "Hot CPI → Nasdaq lags"' value={text} onChange={e => setText(e.target.value)} maxLength={200} aria-label="New rule" />
             <div className="row">
               <select value={cat} onChange={e => setCat(e.target.value)} aria-label="Rule category" style={{ maxWidth: 180 }}>
                 {CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
@@ -99,7 +100,7 @@ export default function MyEdge({ s }: { s: Session }) {
                     {b.outcome ? <span>Market: <DirPill d={b.outcome} /> <span className="mono faint">{fmtPct(b.move_pct)}</span></span> : <span className="pill locked">pending</span>}
                     {won !== null && <b style={{ color: won ? 'var(--up)' : 'var(--down)' }}>{won ? '✓' : '✗'}</b>}
                   </div>
-                  <div className="faint" style={{ marginTop: 6 }}>"{b.reason}"{b.rule_text ? ' · rule used' : ''}</div>
+                  {b.reason && <div className="faint" style={{ marginTop: 6 }}>"{b.reason}"{b.rule_text ? ' · rule used' : ''}</div>}
                   {b.coach_note && <div className="notice" style={{ marginTop: 8, fontSize: 13 }}>{b.coach_note.feedback}</div>}
                 </div>
               )

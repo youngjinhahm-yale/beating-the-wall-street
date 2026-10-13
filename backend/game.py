@@ -121,9 +121,7 @@ def place_bet(con: sqlite3.Connection, user_id: int, card_id: int, direction: st
     direction = (direction or "").lower()
     if direction not in ("up", "flat", "down"):
         raise GameError("Pick Up, Flat or Down.")
-    reason = (reason or "").strip()
-    if len(reason) < 3:
-        raise GameError("Write a one-line reason. Rules beat gut feelings.")
+    reason = (reason or "").strip()  # optional, but it powers the journal and the Coach
     if len(reason) > 280:
         raise GameError("Keep the reason under 280 characters.")
     card = _card(con, card_id)

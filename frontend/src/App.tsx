@@ -11,12 +11,12 @@ import Ranks from './pages/Ranks'
 import TodayPage from './pages/Today'
 
 const PAGES = [
-  { id: 'today', label: 'Today' },
-  { id: 'practice', label: 'Replay' },
-  { id: 'edge', label: 'My Edge' },
-  { id: 'ranks', label: 'Ranks' },
-  { id: 'community', label: 'Community' },
-  { id: 'engine', label: 'Under the Hood' },
+  { id: 'today', label: 'Today', icon: 'M4 13h4v7H4zM10 8h4v12h-4zM16 4h4v16h-4z' },
+  { id: 'practice', label: 'Replay', icon: 'M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z' },
+  { id: 'edge', label: 'My Edge', icon: 'M6 3h9l4 4v14H6zM9 10h7M9 14h7M9 18h4' },
+  { id: 'ranks', label: 'Ranks', icon: 'M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z' },
+  { id: 'community', label: 'Community', icon: 'M4 5h16v11H9l-5 4z' },
+  { id: 'engine', label: 'Under the Hood', icon: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v3M12 19v3M2 12h3M19 12h3' },
 ] as const
 type PageId = typeof PAGES[number]['id']
 
@@ -74,13 +74,16 @@ export default function App() {
               <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => go(p.id)} aria-current={page === p.id ? 'page' : undefined}>{p.label}</button>
             ))}
           </nav>
+          <button className={`btn ghost small gear${page === 'engine' ? ' on' : ''}`} onClick={() => go('engine')} aria-label="Under the Hood">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          </button>
           {profile ? (
             <div className="userchip">
               <TierBadge tier={profile.overall.tier} label={false} />
               <span className="hide-md"><b>{profile.username}</b></span>
               <span className="points" title="Points">◆ {profile.points.toLocaleString()}</span>
               {profile.streak > 0 && <span className="pill hide-sm" title="Daily streak">🔥 {profile.streak}</span>}
-              <button className="btn ghost small" onClick={logout}>Log out</button>
+              <button className="btn ghost small hide-sm" onClick={logout}>Log out</button>
             </div>
           ) : (
             <button className="btn primary small" onClick={() => setAuthOpen(true)}>Log in / Join</button>
@@ -101,6 +104,15 @@ export default function App() {
         Education only - not investment advice. Points have no cash value and can't be bought, sold or withdrawn.
         Market data: Yahoo Finance via yfinance. News: publisher RSS feeds and Google News. AI: gpt-6-luna.
       </footer>
+
+      <nav className="tabbar" aria-label="Main (mobile)">
+        {PAGES.slice(0, 5).map(p => (
+          <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => go(p.id)} aria-current={page === p.id ? 'page' : undefined}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={p.icon} fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" /></svg>
+            <span>{p.label}</span>
+          </button>
+        ))}
+      </nav>
 
       {authOpen && <AuthModal onClose={() => setAuthOpen(false)} onDone={async () => { setAuthOpen(false); await refresh() }} />}
     </>
