@@ -56,7 +56,7 @@ export default function TodayPage({ s }: { s: Session }) {
           <div className="label">{rnd?.status === 'open' ? 'Closes in' : 'Next round'}</div>
           <div className="big">{countdown}</div>
           <div className="muted" style={{ fontSize: 13 }}>{rnd?.status === 'open' ? etTime(rnd.lock_at) : data ? etTime(data.next_lock_at) : ''}</div>
-          <button className="btn ghost small" style={{ color: '#b9c6db', marginTop: 6 }} onClick={() => setShowHow(h => !h)}>{showHow ? 'Hide help' : 'How to play'}</button>
+          <button className="btn ghost small" style={{ color: 'rgba(255,255,255,.9)', marginTop: 6 }} onClick={() => setShowHow(h => !h)}>{showHow ? 'Hide help' : 'How to play'}</button>
         </div>
       </section>
 

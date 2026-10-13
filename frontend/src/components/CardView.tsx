@@ -82,11 +82,6 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
         </div>
       )}
 
-      <div className="rule-line">
-        {card.kind === 'inflection' ? 'Next 15 min' : 'Open → close'} · Flat = ±{card.flat_band}%
-        {card.trade_date && card.kind === 'daily' && <> · {new Date(card.trade_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</>}
-      </div>
-
       {/* The three picks double as the odds display. */}
       <div className="picks" role="radiogroup" aria-label="Your call">
         {DIRS.map(d => {
@@ -94,7 +89,7 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
           const cls = ['pick', d, chosen === d ? 'sel' : '', isOutcome ? 'outcome' : ''].join(' ')
           return (
             <button key={d} className={cls} disabled={!canBet} onClick={() => setPick(d)} role="radio" aria-checked={chosen === d}>
-              <span className="pick-name">{ICON[d]} {NAME[d]}</span>
+              <span className="pick-name">{ICON[d]} {NAME[d]}{d === 'flat' && <span className="pick-band">±{card.flat_band}%</span>}</span>
               <span className="pick-odds">{Math.round(share(d) * 100)}%{mult(d) ? ` · ${mult(d)}x` : ''}</span>
             </button>
           )
