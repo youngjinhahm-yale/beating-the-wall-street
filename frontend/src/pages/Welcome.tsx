@@ -21,15 +21,13 @@ export default function Welcome({ onStart, onLogin, onPeek }: { onStart: () => v
       <section className="w-hero">
         <div className="w-badge">{open ? <><span className="dot pulse" /> Today's round is open · {countdown}</> : <>Next round in {countdown}</>}</div>
         <h1>Beat Wall Street,<br />one call a day.</h1>
-        <p>Read the news. Call <b>Up</b>, <b>Flat</b> or <b>Down</b>. Learn why it moved.</p>
-        <button className="btn w-cta" onClick={onStart}>Start playing — it's free</button>
+        <p>Read the news. Call <b>Up</b>, <b>Flat</b> or <b>Down</b>.</p>
+        <button className="btn w-cta" onClick={onStart}>Start playing</button>
         <button className="w-link" onClick={onLogin}>I already have an account</button>
       </section>
 
-      <section className="w-steps">
-        <div className="w-step"><span className="w-num">1</span><div><b>Read</b><span>AI picks 3–5 market-moving stories each morning.</span></div></div>
-        <div className="w-step"><span className="w-num">2</span><div><b>Call it</b><span>Up, Flat or Down before 9:25 AM ET.</span></div></div>
-        <div className="w-step"><span className="w-num">3</span><div><b>Learn</b><span>After the close, save the lesson as your rule.</span></div></div>
+      <section className="w-flow" aria-label="How it works">
+        <span>📰 Read</span><i>→</i><span>🎯 Call it</span><i>→</i><span>🏆 Win points</span>
       </section>
 
       {sample && (
@@ -57,9 +55,9 @@ export default function Welcome({ onStart, onLogin, onPeek }: { onStart: () => v
       </section>
 
       <section className="w-why">
-        <div><b>Rules, not hunches.</b><span>Every miss becomes a rule you can test.</span></div>
-        <div><b>Beat the crowd.</b><span>Correct calls against the crowd pay more.</span></div>
-        <div><b>No real money.</b><span>Points only. Pure practice.</span></div>
+        <div><b>Beat the crowd.</b><span>Calls against the crowd pay more.</span></div>
+        <div><b>Climb the ranks.</b><span>Tiers for macro, company, geopolitics and sector news.</span></div>
+        <div><b>No real money.</b><span>Points only.</span></div>
       </section>
 
       <button className="btn w-cta dark" onClick={onStart}>Make my first call</button>

@@ -351,3 +351,6 @@ pre.json { background: var(--panel-2); border: 1px solid var(--line); border-rad
 .w-why div { display: flex; flex-direction: column; border-left: 3px solid var(--accent); padding-left: 12px; }
 .w-why b { font-size: 15px; }
 .w-why span { color: var(--ink-2); font-size: 14px; }
+.w-flow { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: var(--panel);
+  border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); font-weight: 800; font-size: 14px; }
+.w-flow i { font-style: normal; color: var(--ink-3); }
