@@ -68,11 +68,7 @@ export default function Ranks({ s }: { s: Session }) {
           </div>
         </section>
         <section className="panel stack">
-          <h2>How LP works</h2>
-          <div className="muted" style={{ fontSize: 14 }}>
-            Right: <b>+30 × (1 − p)</b>. Wrong: <b>−30 × p</b>. Here p is the crowd's share on your pick at lock.
-            You only climb on average if you judge better than the crowd. Following the herd earns little; a correct contrarian call earns a lot.
-          </div>
+          <h2>Tiers</h2>
           <div className="stack" style={{ gap: 6 }}>
             {LADDER.map(([t, need]) => (
               <div key={t} className="spread"><TierBadge tier={t} /><span className="faint mono">{need === null ? (t === 'Challenger' ? '#1 Master' : 'Top 3 Masters') : `${need} LP`}</span></div>
