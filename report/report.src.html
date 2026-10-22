@@ -60,7 +60,7 @@
 </section>
 
 <!-- 2. Motivation -->
-<h2>1. Motivation</h2>
+<h2>2. Motivation</h2>
 <p class="lead">Retail investors do not lose to institutions because they lack news. They lose because they never build a learning curve.</p>
 <p><b>Who has the problem.</b> Self-directed investors who trade on phone apps (Robinhood, Toss, Webull) and follow market news every day. I am one of them. Like most of my friends who invest, I read headlines, act on a feeling, and move on. When a trade works I do not know whether I was right or lucky; when it fails I blame the market. There is no record of <i>why</i> I acted, so the same mistake comes back.</p>
 <p><b>How institutions differ.</b> A fund desk writes its reasoning before the trade, has risk rules (position limits, loss cuts), and reviews outcomes against those rules afterwards. Each trade becomes feedback and the rules improve. Retail investors have none of that structure, and studying alone rarely fixes it: reading about markets is passive, so most people quit within weeks.</p>
@@ -73,7 +73,7 @@
 <p><b>Why it matters.</b> If practice is fun enough to repeat daily and gives honest feedback before any money is at risk, retail investors can build the one habit that separates professionals from gamblers: rules that are written down, tested and scored.</p>
 
 <!-- 3. What is new -->
-<h2>2. What is new here</h2>
+<h2>3. What is new here</h2>
 <p>Nothing on the market combines a <b>daily commit-before-the-outcome bet on real news</b>, <b>crowd odds</b>, <b>AI explanations of what really moved the market</b>, and a <b>personal rulebook with scored win rates</b>. Each existing product covers one piece:</p>
 <table>
   <tr><th>Product</th><th>What it does</th><th>What it lacks for building a learning curve</th></tr>
@@ -95,7 +95,7 @@
 </ol>
 
 <!-- 4. Agents -->
-<h2>3. The agents</h2>
+<h2>4. The agents</h2>
 <p>Six PydanticAI agents do only language work: reading, writing and judging text. Deterministic Python code runs the schedule, the money (points) and all arithmetic, so the system is predictable and cheap.</p>
 <div class="svgwrap">{{DIAGRAM}}</div>
 <p class="muted">Figure 1. Agent architecture. Dashed lines are tool calls to the MCP server. The Fact-checker can send failed cards back to the Editor once.</p>
@@ -135,7 +135,7 @@
 </div>
 
 <!-- 5. Tokenomics -->
-<h2>4. Tokenomics</h2>
+<h2>5. Tokenomics</h2>
 <p class="lead">Almost all AI cost is a fixed daily cost shared by every player, so cost per user falls as the app grows.</p>
 <p>Every model call is written to an <code>llm_calls</code> table (input, cached input, output tokens, cost, latency), and the app shows the totals on its own Usage page (Figure 6). All numbers below come from {{CALLS}} real calls between Sept 28 and Oct 22, priced at the course rates for gpt-6-luna: $0.10 per 1M input tokens, $0.01 cached, $0.125 cache write, $0.50 output.</p>
 <div class="kpis">
@@ -172,7 +172,7 @@
 <p>{{AB_SUMMARY}}</p>
 
 <!-- 6. Safety -->
-<h2>5. Safety</h2>
+<h2>6. Safety</h2>
 <p class="lead">The risks that matter here: poisoned text (news or posts) steering an agent, invented facts or answer leaks on a card, runaway agents, overspending, and cheating on bets.</p>
 <table>
   <tr><th>Risk</th><th>Defense built</th></tr>
@@ -199,7 +199,7 @@
 <p><b>A false positive I found and fixed.</b> The safety log showed a CNBC/TradingView headline quarantined as an injection because "Says <b>Dan</b> Niles" matched a case-insensitive jailbreak keyword ("DAN"). I replaced that pattern with the full phrase "do anything now". The log is how I found it.</p>
 
 <!-- 7. Impact -->
-<h2>6. Impact</h2>
+<h2>7. Impact</h2>
 <p>The app has run on real data for four weeks: <b>{{ROUNDS}} rounds</b> from {{FIRST}} to {{LAST}}, {{SETTLED}} settled daily cards and {{HEADLINES}} stored headlines, at a total AI cost of ${{TOTAL_COST}}.</p>
 <h3>What the data already teaches</h3>
 <ul>
@@ -213,7 +213,7 @@
   <tr><td>Daily time to a market briefing</td><td>30–60 min, scattered</td><td>About 5 minutes for 3–5 cards</td><td>My own habit vs. app use; to confirm with pilot users</td></tr>
   <tr><td>Feedback on a call</td><td>None, or weeks later</td><td>Same day at 4:10 PM, with the reason</td><td>App design (settlement job)</td></tr>
   <tr><td>Record of reasoning</td><td>None</td><td>Journal of every call + scored rulebook</td><td>App</td></tr>
-  <tr><td>Cost of the AI per player</td><td>—</td><td>${{PER_USER_MONTH}} / month at 10,000 players</td><td>Measured (Section 4)</td></tr>
+  <tr><td>Cost of the AI per player</td><td>—</td><td>${{PER_USER_MONTH}} / month at 10,000 players</td><td>Measured (Section 5)</td></tr>
 </table>
 <div class="callout warn">
   <b>Real users — {{PILOT_STATUS}}</b>
@@ -222,7 +222,7 @@
 <p><b>For an organization.</b> A university investment club or a brokerage's investor-education team could run this for 100 members for about ${{COST_100}} a month in model fees, plus hosting. Leagues (next step) would let a club run its own weekly competition.</p>
 
 <!-- 8. Limits + next steps -->
-<h2>7. Limits and next steps</h2>
+<h2>8. Limits and next steps</h2>
 <p><b>What does not work yet</b></p>
 <ul>
   <li><b>It needs to be running.</b> Rounds are built and settled only while the app runs; there is no hosted version yet, so players must use the computer it runs on.</li>
