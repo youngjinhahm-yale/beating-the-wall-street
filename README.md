@@ -51,7 +51,7 @@ It opens **http://localhost:8000**. Use `python run.py --port 8010` if port 8000
 
 ### What you will see (sample mode, the default)
 
-The repo ships `data/sample.db`: about two weeks of **real** history (Sept 28 - Oct 13, 2026) produced by the actual
+The repo ships `data/sample.db`: about four weeks of **real** history (Sept 28 - Oct 23, 2026) produced by the actual
 agents: past rounds with real outcomes, Coach lessons, detected intraday turning points with their attributed news, and
 the measured token usage of every run. It works even without internet.
 
