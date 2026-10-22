@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import type { Card, Direction, Rule } from '../api'
+import type { Card, Direction, LiveCard, Rule } from '../api'
 import { api, fmtPct, parsePM } from '../api'
 import { CategoryPill, Sparkline, Spinner } from './bits'
 
@@ -10,13 +10,14 @@ interface Props {
   onNeedLogin: () => void
   onChanged: () => void
   onRuleSaved?: () => void
+  live?: LiveCard
 }
 
 const DIRS: Direction[] = ['up', 'flat', 'down']
 const ICON: Record<string, string> = { up: '▲', flat: '■', down: '▼', void: '•' }
 const NAME: Record<string, string> = { up: 'Up', flat: 'Flat', down: 'Down', void: 'Void' }
 
-export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged, onRuleSaved }: Props) {
+export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged, onRuleSaved, live }: Props) {
   const [pick, setPick] = useState<Direction | null>(null)
   const [stake, setStake] = useState(30)
   const [reason, setReason] = useState('')
@@ -126,6 +127,13 @@ export default function CardView({ card, rules, loggedIn, onNeedLogin, onChanged
           <button className="btn primary block" onClick={submit} disabled={busy}>
             {busy ? <Spinner /> : practice ? 'Reveal' : pick ? `Bet ${stake} on ${NAME[pick]}` : 'Pick a side'}
           </button>
+        </div>
+      )}
+
+      {live && !settled && (
+        <div className={`liveline ${live.winning === null ? '' : live.winning ? 'win' : 'loss'}`}>
+          <span><span className="dot pulse" /> Now <b className="mono">{fmtPct(live.move_pct)}</b> · {NAME[live.now]}</span>
+          {live.winning !== null && <b>{live.winning ? "You're winning" : "You're behind"}</b>}
         </div>
       )}
 

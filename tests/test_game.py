@@ -74,7 +74,7 @@ def test_parimutuel_payout_and_points(con):
     assert res["outcome"] == "up"
     win_pool = pools["up"]["pool"]  # 150 players + 40 seed
     pts = {u: one(con.execute("SELECT points FROM users WHERE id = ?", (u,)))["points"] for u in (a, b, c)}
-    allowance = config.DAILY_ALLOWANCE
+    allowance = config.DAILY_ALLOWANCE + config.MISSION_ALL_CARDS_BONUS  # single-card round: everyone completes the mission
     assert pts[a] == config.START_POINTS + allowance - 100 + round(100 * total / win_pool)
     assert pts[b] == config.START_POINTS + allowance - 50
     assert pts[c] == config.START_POINTS + allowance - 50 + round(50 * total / win_pool)
@@ -89,7 +89,7 @@ def test_void_refunds(con):
     card = one(con.execute("SELECT * FROM cards WHERE id = ?", (cid,)))
     game.settle_card(con, card, None, None)
     assert one(con.execute("SELECT points FROM users WHERE id = ?", (a,)))["points"] == \
-        config.START_POINTS + config.DAILY_ALLOWANCE
+        config.START_POINTS + config.DAILY_ALLOWANCE + config.MISSION_ALL_CARDS_BONUS
 
 
 def test_rules_enforced(con):
@@ -145,3 +145,12 @@ def test_flat_band_from_history():
     band, rates = market.flat_band_and_base_rates(daily)
     assert band == pytest.approx(0.3)  # 0.30 x mean |1%|
     assert abs(sum(rates.values()) - 1) < 0.01
+
+
+def test_mission_bonus_once(con):
+    a = _user(con, "hana")
+    rid, cid = _round(con)
+    r = game.place_bet(con, a, cid, "up", 20, "")
+    assert r["mission_bonus"] == config.MISSION_ALL_CARDS_BONUS
+    st = game.mission_status(con, a, rid)
+    assert st["done"] and st["called"] == st["total"] == 1

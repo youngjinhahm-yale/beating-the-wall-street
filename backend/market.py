@@ -231,3 +231,29 @@ def snapshot(con: sqlite3.Connection) -> list[dict]:
 
 def snapshot_json(con: sqlite3.Connection) -> str:
     return dumps(snapshot(con))
+
+
+# --- live tracker (during the session) -----------------------------------------------
+
+_live_cache: dict[str, tuple[float, dict]] = {}
+
+
+def live_move(ticker: str, trade_date: str, ttl: int = 60) -> dict | None:
+    """Today's open and latest price for a ticker, cached for `ttl` seconds. None before the open."""
+    import time as _t
+    hit = _live_cache.get(ticker)
+    if hit and _t.time() - hit[0] < ttl:
+        return hit[1]
+    try:
+        start = datetime.combine(date.fromisoformat(trade_date), time(9, 30), tzinfo=config.ET)
+        bars = _bars(_chart(ticker, "1m", start, start + timedelta(hours=7)))
+    except Exception as exc:
+        log.warning("live fetch failed for %s: %s", ticker, exc)
+        return hit[1] if hit else None
+    if not bars:
+        return None
+    o, last = bars[0]["open"], bars[-1]["close"]
+    data = {"open": round(o, 2), "last": round(last, 2), "move_pct": round((last / o - 1) * 100, 3),
+            "as_of": bars[-1]["ts"]}
+    _live_cache[ticker] = (_t.time(), data)
+    return data

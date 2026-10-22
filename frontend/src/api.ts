@@ -97,3 +97,10 @@ export function etTime(iso: string): string {
   return new Date(iso).toLocaleString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit',
     month: 'short', day: 'numeric' }) + ' ET'
 }
+
+export interface LiveCard { card_id: number; open: number; last: number; move_pct: number; as_of: string; now: Direction; my_pick: Direction | null; winning: boolean | null }
+export interface Mission { called: number; total: number; bonus: number; done: boolean }
+export interface Results {
+  round_id: number; trade_date?: string; correct: number; called: number; net_points: number; lp: number
+  mission_bonus: number; streak: number; cards: { ticker: string; title: string; pick: Direction; outcome: string; move_pct: number | null }[]
+}

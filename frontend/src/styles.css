@@ -354,3 +354,24 @@ pre.json { background: var(--panel-2); border: 1px solid var(--line); border-rad
 .w-flow { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: var(--panel);
   border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); font-weight: 800; font-size: 14px; }
 .w-flow i { font-style: normal; color: var(--ink-3); }
+
+/* --- v2: mission, results, live tracker --- */
+.pill.mission { background: #fff7e0; color: #a35b00; border-color: transparent; }
+.results-card { background: var(--panel); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); margin-bottom: 16px;
+  display: flex; flex-direction: column; gap: 12px; border: 2px solid var(--brand-soft); }
+.r-label { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); }
+.r-streak { font-size: 13px; font-weight: 800; color: #c2410c; }
+.r-main { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.r-main div { display: flex; flex-direction: column; }
+.r-main b { font-size: 26px; font-weight: 900; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.r-main span { font-size: 12px; color: var(--ink-3); font-weight: 700; }
+.r-main .pos b { color: var(--up); } .r-main .neg b { color: var(--down); }
+.r-cards { display: flex; flex-wrap: wrap; gap: 6px; }
+.r-cards span { font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; }
+.r-cards .win { background: var(--up-bg); color: var(--up); } .r-cards .loss { background: var(--down-bg); color: var(--down); }
+.r-cards .void { background: var(--flat-bg); color: var(--flat); }
+.liveline { display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-radius: 10px; padding: 9px 12px;
+  background: var(--brand-soft); color: var(--brand); }
+.liveline .dot { margin-right: 4px; }
+.liveline.win { background: var(--up-bg); color: var(--up); }
+.liveline.loss { background: var(--down-bg); color: var(--down); }

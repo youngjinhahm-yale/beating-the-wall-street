@@ -109,6 +109,49 @@ def today(user=Depends(auth.optional_user)):
                 "round": _round_payload(con, rnd, uid) if rnd else None}
 
 
+@app.get("/api/rounds/{round_id}/live")
+def round_live(round_id: int, user=Depends(auth.optional_user)):
+    """Move so far for each card of a locked round (0 tokens; Yahoo prices cached for 60 s)."""
+    with connect() as con:
+        rnd = one(con.execute("SELECT * FROM rounds WHERE id = ?", (round_id,)))
+        if not rnd or rnd["status"] != "locked":
+            return {"live": False, "cards": []}
+        cards = rows(con.execute("SELECT id, ticker, flat_band FROM cards WHERE round_id = ?", (round_id,)))
+        bets = {b["card_id"]: b["direction"] for b in rows(con.execute(
+            "SELECT card_id, direction FROM bets WHERE user_id = ? AND practice = 0", (user["id"] if user else -1,)))}
+    out = []
+    for c in cards:
+        mv = market.live_move(c["ticker"], rnd["trade_date"])
+        if not mv:
+            continue
+        now = market.classify(mv["move_pct"], c["flat_band"])
+        pick = bets.get(c["id"])
+        out.append({"card_id": c["id"], **mv, "now": now, "my_pick": pick,
+                    "winning": (pick == now) if pick else None})
+    return {"live": bool(out), "cards": out}
+
+
+@app.get("/api/me/round/{round_id}")
+def my_round(round_id: int, user=Depends(auth.current_user)):
+    with connect() as con:
+        return {"mission": game.mission_status(con, user["id"], round_id),
+                "results": game.round_results(con, user["id"], round_id)}
+
+
+@app.get("/api/me/last-results")
+def last_results(user=Depends(auth.current_user)):
+    """Scoreboard for the most recent settled round this player bet on."""
+    with connect() as con:
+        r = one(con.execute(
+            "SELECT r.id, r.trade_date FROM rounds r JOIN cards c ON c.round_id = r.id JOIN bets b ON b.card_id = c.id "
+            "WHERE b.user_id = ? AND b.practice = 0 AND r.status = 'settled' ORDER BY r.trade_date DESC LIMIT 1",
+            (user["id"],)))
+        if not r:
+            return None
+        res = game.round_results(con, user["id"], r["id"])
+        return {**res, "trade_date": r["trade_date"]} if res else None
+
+
 @app.get("/api/rounds")
 def list_rounds():
     with connect() as con:

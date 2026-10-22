@@ -60,6 +60,7 @@ PRACTICE_LP_FACTOR = 1 / 3     # replay rounds count, but less than live ones
 PLACEMENT_BETS = 5             # bets in a category before a tier is shown
 START_LP = 100                 # Bronze after placement
 HOUSE_SEED = 100               # points the house spreads across the 3 pools by base rate
+MISSION_ALL_CARDS_BONUS = 50  # call every card in a round
 FLAT_BAND_FACTOR = 0.30        # Flat band = factor x 20-day mean |open-to-close| move
 
 CATEGORIES = ["macro", "company", "geopolitics", "sector"]

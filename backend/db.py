@@ -188,6 +188,14 @@ CREATE TABLE IF NOT EXISTS pipeline_runs (
     round_id INTEGER,
     trace TEXT
 );
+CREATE TABLE IF NOT EXISTS missions (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    round_id INTEGER NOT NULL REFERENCES rounds(id),
+    kind TEXT NOT NULL,
+    bonus INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (user_id, round_id, kind)
+);
 CREATE TABLE IF NOT EXISTS safety_events (
     id INTEGER PRIMARY KEY,
     ts TEXT NOT NULL,

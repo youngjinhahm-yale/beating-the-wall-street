@@ -149,8 +149,54 @@ def place_bet(con: sqlite3.Connection, user_id: int, card_id: int, direction: st
     con.execute(
         "INSERT INTO bets (user_id, card_id, direction, stake, reason, rule_id, practice, created_at) "
         "VALUES (?, ?, ?, ?, ?, ?, 0, ?)", (user_id, card_id, direction, stake, reason, rule_id, utcnow()))
+    bonus = _check_mission(con, user_id, card["round_id"])
     return {"mode": "live", "card_id": card_id, "direction": direction, "stake": stake,
-            "pools": pools(con, card)}
+            "pools": pools(con, card), "mission_bonus": bonus}
+
+
+def _round_counts(con: sqlite3.Connection, user_id: int, round_id: int) -> tuple[int, int]:
+    total = con.execute("SELECT COUNT(*) FROM cards WHERE round_id = ?", (round_id,)).fetchone()[0]
+    mine = con.execute("SELECT COUNT(*) FROM bets b JOIN cards c ON c.id = b.card_id WHERE c.round_id = ? "
+                       "AND b.user_id = ? AND b.practice = 0", (round_id, user_id)).fetchone()[0]
+    return mine, total
+
+
+def _check_mission(con: sqlite3.Connection, user_id: int, round_id: int) -> int:
+    """Daily mission: call every card in the round -> one-time bonus."""
+    mine, total = _round_counts(con, user_id, round_id)
+    if total and mine >= total:
+        cur = con.execute("INSERT OR IGNORE INTO missions (user_id, round_id, kind, bonus, created_at) "
+                          "VALUES (?, ?, 'all_cards', ?, ?)", (user_id, round_id, config.MISSION_ALL_CARDS_BONUS, utcnow()))
+        if cur.rowcount:
+            con.execute("UPDATE users SET points = points + ? WHERE id = ?", (config.MISSION_ALL_CARDS_BONUS, user_id))
+            return config.MISSION_ALL_CARDS_BONUS
+    return 0
+
+
+def mission_status(con: sqlite3.Connection, user_id: int, round_id: int) -> dict:
+    mine, total = _round_counts(con, user_id, round_id)
+    done = con.execute("SELECT 1 FROM missions WHERE user_id = ? AND round_id = ? AND kind = 'all_cards'",
+                       (user_id, round_id)).fetchone() is not None
+    return {"called": mine, "total": total, "bonus": config.MISSION_ALL_CARDS_BONUS, "done": done}
+
+
+def round_results(con: sqlite3.Connection, user_id: int, round_id: int) -> dict | None:
+    """One player's scoreboard for a settled round."""
+    bets = rows(con.execute(
+        "SELECT b.direction, b.stake, b.payout, b.lp_change, c.outcome, c.ticker, c.title, c.move_pct FROM bets b "
+        "JOIN cards c ON c.id = b.card_id WHERE c.round_id = ? AND b.user_id = ? AND b.practice = 0 "
+        "AND b.settled_at IS NOT NULL", (round_id, user_id)))
+    if not bets:
+        return None
+    scored = [b for b in bets if b["outcome"] != "void"]
+    bonus = con.execute("SELECT COALESCE(SUM(bonus), 0) FROM missions WHERE user_id = ? AND round_id = ?",
+                        (user_id, round_id)).fetchone()[0]
+    streak = one(con.execute("SELECT streak FROM users WHERE id = ?", (user_id,)))["streak"]
+    return {"round_id": round_id, "correct": sum(b["direction"] == b["outcome"] for b in scored), "called": len(scored),
+            "net_points": sum((b["payout"] or 0) - b["stake"] for b in bets) + bonus,
+            "lp": round(sum(b["lp_change"] or 0 for b in bets), 1), "mission_bonus": bonus, "streak": streak,
+            "cards": [{"ticker": b["ticker"], "title": b["title"], "pick": b["direction"], "outcome": b["outcome"],
+                       "move_pct": b["move_pct"]} for b in bets]}
 
 
 def _daily_allowance(con: sqlite3.Connection, user_id: int) -> None:

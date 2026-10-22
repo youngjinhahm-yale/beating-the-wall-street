@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { Session } from '../App'
-import type { Today } from '../api'
+import type { LiveCard, Mission, Results, Today } from '../api'
 import { api, etTime, fmtPct } from '../api'
 import CardView from '../components/CardView'
 import { Spinner, useCountdown } from '../components/bits'
@@ -14,6 +14,9 @@ export default function TodayPage({ s }: { s: Session }) {
   const [building, setBuilding] = useState(false)
   const [buildMsg, setBuildMsg] = useState<string | null>(null)
   const [showHow, setShowHow] = useState(false)
+  const [live, setLive] = useState<Record<number, LiveCard>>({})
+  const [mission, setMission] = useState<Mission | null>(null)
+  const [results, setResults] = useState<Results | null>(null)
 
   const load = useCallback(async () => {
     try { setData(await api<Today>('/api/today')); setErr(null) } catch (e) { setErr((e as Error).message) }
@@ -25,6 +28,24 @@ export default function TodayPage({ s }: { s: Session }) {
   useEffect(() => { if (s.profile && s.profile.settled_bets === 0 && s.profile.live_bets === 0) setShowHow(true) }, [s.profile])
 
   const rnd = data?.round
+
+  // Mission progress for the open round, and the scoreboard of the last settled round.
+  useEffect(() => {
+    if (!s.profile || !rnd) { setMission(null); setResults(null); return }
+    if (rnd.status === 'open') api<{ mission: Mission }>(`/api/me/round/${rnd.id}`).then(r => setMission(r.mission)).catch(() => {})
+    else setMission(null)
+    api<Results | null>('/api/me/last-results').then(setResults).catch(() => {})
+  }, [s.profile, rnd?.id, rnd?.status, data])
+
+  // Live tracker: while the round is locked (market hours), refresh each card's move every minute.
+  useEffect(() => {
+    if (!rnd || rnd.status !== 'locked') { setLive({}); return }
+    const pull = () => api<{ cards: LiveCard[] }>(`/api/rounds/${rnd.id}/live`)
+      .then(r => setLive(Object.fromEntries(r.cards.map(c => [c.card_id, c])))).catch(() => {})
+    void pull()
+    const t = setInterval(pull, 60000)
+    return () => clearInterval(t)
+  }, [rnd?.id, rnd?.status])
   const countdown = useCountdown(rnd?.status === 'open' ? rnd.lock_at : data?.next_lock_at, now)
 
   async function build() {
@@ -47,7 +68,10 @@ export default function TodayPage({ s }: { s: Session }) {
             {rnd?.status === 'open' && <span className="pill live"><span className="dot pulse" /> Betting open</span>}
             {rnd?.status === 'locked' && <span className="pill locked">Locked · settles 4 PM ET</span>}
             {rnd?.status === 'settled' && <span className="pill">Settled</span>}
-            {rnd && s.profile && <span className="pill">{played}/{rnd.cards.length} called</span>}
+            {rnd && s.profile && rnd.status === 'open' && mission && (
+              <span className="pill mission">{mission.done ? `✓ Mission +${mission.bonus}` : `🎯 Call all ${mission.total} · ${mission.called}/${mission.total} · +${mission.bonus}`}</span>
+            )}
+            {rnd && s.profile && rnd.status !== 'open' && <span className="pill">{played}/{rnd.cards.length} called</span>}
           </div>
           <h1>{rnd ? new Date(rnd.trade_date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }) : 'No round yet'}</h1>
           <div className="muted">{rnd ? 'Will each market close above, near, or below its open?' : 'Agents build a round from the news every trading morning.'}</div>
@@ -69,6 +93,27 @@ export default function TodayPage({ s }: { s: Session }) {
         </div>
       )}
 
+      {results && (
+        <section className="results-card" aria-label="Your last results">
+          <div className="spread">
+            <span className="r-label">Results · {results.trade_date ? new Date(results.trade_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</span>
+            {results.streak > 0 && <span className="r-streak">🔥 {results.streak}-day streak</span>}
+          </div>
+          <div className="r-main">
+            <div><b>{results.correct}/{results.called}</b><span>correct</span></div>
+            <div className={results.net_points >= 0 ? 'pos' : 'neg'}><b>{results.net_points >= 0 ? '+' : ''}{results.net_points}</b><span>points</span></div>
+            <div className={results.lp >= 0 ? 'pos' : 'neg'}><b>{results.lp >= 0 ? '+' : ''}{results.lp}</b><span>LP</span></div>
+          </div>
+          <div className="r-cards">
+            {results.cards.map((c, i) => (
+              <span key={i} className={c.outcome === 'void' ? 'void' : c.pick === c.outcome ? 'win' : 'loss'}>
+                {c.outcome === 'void' ? '•' : c.pick === c.outcome ? '✓' : '✗'} {c.ticker}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
       {rnd && rnd.snapshot.length > 0 && (
         <div className="strip" style={{ marginBottom: 18 }} aria-label="Market snapshot">
           {rnd.snapshot.filter(t => SNAP.includes(t.ticker)).map(t => (
@@ -87,7 +132,7 @@ export default function TodayPage({ s }: { s: Session }) {
       {rnd ? (
         <div className="grid cards">
           {rnd.cards.map(c => (
-            <CardView key={c.id} card={c} rules={s.rules} loggedIn={!!s.profile} onNeedLogin={s.needLogin}
+            <CardView key={c.id} card={c} rules={s.rules} loggedIn={!!s.profile} onNeedLogin={s.needLogin} live={live[c.id]}
               onChanged={async () => { await load(); await s.refresh() }} onRuleSaved={s.refresh} />
           ))}
         </div>
