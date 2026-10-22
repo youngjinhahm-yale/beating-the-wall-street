@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beating the Wall Street — Final Report</title>
+<style>
+  :root { --ink:#14182b; --ink2:#4b5571; --ink3:#8c94ab; --line:#e4e8f2; --brand:#4f46e5; --soft:#eef0ff; --up:#10b26c; --down:#f0445a; --warn:#c2620a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f3f5fb; color: var(--ink); font: 15px/1.6 "Segoe UI", Inter, system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 28px 64px; background: #fff; }
+  h1 { font-size: 34px; letter-spacing: -.02em; margin: 0 0 6px; }
+  h2 { font-size: 22px; margin: 36px 0 10px; padding-top: 14px; border-top: 3px solid var(--soft); color: var(--ink); }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p { margin: 8px 0; }
+  .lead { font-size: 17px; color: var(--ink2); }
+  .hero { background: linear-gradient(120deg,#4f46e5,#7c3aed 55%,#db2777); color: #fff; border-radius: 18px; padding: 26px 28px; margin-bottom: 18px; }
+  .hero h1 { color: #fff; } .hero p { color: rgba(255,255,255,.92); margin: 4px 0; }
+  .hero a { color: #fff; text-decoration: underline; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 10px 0 14px; }
+  th { text-align: left; background: #f5f7fc; color: var(--ink2); font-weight: 700; padding: 7px 9px; border-bottom: 1px solid var(--line); }
+  td { padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .pass { color: var(--up); font-weight: 700; } .fail { color: var(--down); font-weight: 700; }
+  figure { margin: 14px 0; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid var(--line); border-radius: 12px; }
+  figure.phone img { max-height: 520px; }
+  figcaption { font-size: 12.5px; color: var(--ink3); margin-top: 6px; }
+  .row { display: flex; gap: 14px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+  .row figure { flex: 1 1 220px; margin: 6px 0; }
+  .callout { background: var(--soft); border-left: 4px solid var(--brand); border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .warn { background: #fff3df; border-left-color: var(--warn); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0; }
+  .kpi { background: #f5f7fc; border-radius: 12px; padding: 10px 12px; }
+  .kpi b { display: block; font-size: 22px; letter-spacing: -.02em; }
+  .kpi span { font-size: 12px; color: var(--ink3); font-weight: 600; }
+  code { background: #f5f7fc; padding: 1px 5px; border-radius: 5px; font-size: 13px; }
+  ol li, ul li { margin: 3px 0; }
+  .svgwrap { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .svgwrap svg { width: 100%; height: auto; display: block; }
+  .muted { color: var(--ink3); font-size: 13px; }
+  @media print {
+    body { background: #fff; font-size: 11pt; }
+    main { padding: 0; max-width: none; }
+    h2 { break-after: avoid; } table, figure, .callout, .kpis { break-inside: avoid; }
+    figure.phone img { max-height: 380px; }
+    @page { size: letter; margin: 0.7in; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<!-- 1. Title + links -->
+<section class="hero">
+  <h1>Beating the Wall Street</h1>
+  <p><b>Youngjin Hahm</b> · MGT 409 AI Foundations for Managers · Final Project · October 2026</p>
+  <p>Repository: <a href="https://github.com/youngjinhahm-yale/beating-the-wall-street">github.com/youngjinhahm-yale/beating-the-wall-street</a> (runs locally with <code style="background:rgba(255,255,255,.2);color:#fff">python run.py</code>; see the README)</p>
+  <p style="font-size:17px;margin-top:10px"><b>One sentence:</b> a daily news-prediction game in which AI agents turn yesterday's market news into Up / Flat / Down bets, so retail investors practice calling the market against a crowd and turn every result into a written, scored rule.</p>
+</section>
+
+<!-- 2. Motivation -->
+<h2>1. Motivation</h2>
+<p class="lead">Retail investors do not lose to institutions because they lack news. They lose because they never build a learning curve.</p>
+<p><b>Who has the problem.</b> Self-directed investors who trade on phone apps (Robinhood, Toss, Webull) and follow market news every day. I am one of them. Like most of my friends who invest, I read headlines, act on a feeling, and move on. When a trade works I do not know whether I was right or lucky; when it fails I blame the market. There is no record of <i>why</i> I acted, so the same mistake comes back.</p>
+<p><b>How institutions differ.</b> A fund desk writes its reasoning before the trade, has risk rules (position limits, loss cuts), and reviews outcomes against those rules afterwards. Each trade becomes feedback and the rules improve. Retail investors have none of that structure, and studying alone rarely fixes it: reading about markets is passive, so most people quit within weeks.</p>
+<p><b>What it costs today.</b></p>
+<ul>
+  <li><b>Money:</b> impulsive, headline-driven trades that no written rule would have allowed.</li>
+  <li><b>Time:</b> 30–60 minutes a day of scattered news reading that never becomes a reusable lesson (my own habit; to be confirmed in user interviews).</li>
+  <li><b>Frustration:</b> no way to separate skill from luck, which pushes people to quit or to over-trade.</li>
+</ul>
+<p><b>Why it matters.</b> If practice is fun enough to repeat daily and gives honest feedback before any money is at risk, retail investors can build the one habit that separates professionals from gamblers: rules that are written down, tested and scored.</p>
+
+<!-- 3. What is new -->
+<h2>2. What is new here</h2>
+<p>Nothing on the market combines a <b>daily commit-before-the-outcome bet on real news</b>, <b>crowd odds</b>, <b>AI explanations of what really moved the market</b>, and a <b>personal rulebook with scored win rates</b>. Each existing product covers one piece:</p>
+<table>
+  <tr><th>Product</th><th>What it does</th><th>What it lacks for building a learning curve</th></tr>
+  <tr><td>Investopedia Stock Simulator</td><td>Paper trading with virtual cash</td><td>No daily news focus; no feedback on <i>why</i> a trade worked</td></tr>
+  <tr><td>Wall Street Survivor</td><td>Paper trading plus finance courses</td><td>Courses are separate from the live market; no daily loop</td></tr>
+  <tr><td>Kalshi / Polymarket</td><td>Prediction markets, including index ranges</td><td>Real money and regulation; built for profit, not practice; no explanation of outcomes</td></tr>
+  <tr><td>Robinhood</td><td>Commission-free trading with game-like design</td><td>Gamifies real-money trading itself; no structured reflection</td></tr>
+  <tr><td>Stocktwits / r/wallstreetbets</td><td>Social market discussion</td><td>No scoring, so loud voices beat accurate ones</td></tr>
+  <tr><td>Morning Brew / Bloomberg newsletters</td><td>Daily market summaries</td><td>Passive reading: no prediction, no feedback</td></tr>
+  <tr><td>ChatGPT</td><td>Explains any headline on request</td><td>Explains <i>after</i> the fact; no commitment, no score, no memory of your mistakes</td></tr>
+</table>
+<p><b>What this project does differently:</b></p>
+<ol>
+  <li><b>Commit, then see.</b> Bets lock at 9:25 AM ET, before the market opens, and settle on the official open-to-close move. The outcome is real feedback, not hindsight.</li>
+  <li><b>Crowd odds teach "priced in".</b> Payouts are parimutuel (like horse racing): a correct call against the crowd pays more, so players learn that the consensus is already in the price.</li>
+  <li><b>Skill by type of news.</b> League-of-Legends-style tiers are kept separately for Macro, Company, Geopolitics and Sector news, so players see <i>where</i> their edge is.</li>
+  <li><b>Rules, scored.</b> After each close the Coach agent writes one testable rule per card; players save rules and the app tracks each rule's win rate.</li>
+  <li><b>Big-move replays.</b> Agents detect sharp intraday turns in 1-minute index data and attach the headline that caused them, giving unlimited practice on real moments.</li>
+</ol>
+
+<!-- 4. Agents -->
+<h2>3. The agents</h2>
+<p>Six PydanticAI agents do only language work: reading, writing and judging text. Deterministic Python code runs the schedule, the money (points) and all arithmetic, so the system is predictable and cheap.</p>
+<div class="svgwrap">{{DIAGRAM}}</div>
+<p class="muted">Figure 1. Agent architecture. Dashed lines are tool calls to the MCP server. The Fact-checker can send failed cards back to the Editor once.</p>
+
+<table>
+  <tr><th>Agent</th><th>Job</th><th>Tools (MCP)</th><th>Typed output</th></tr>
+  <tr><td><b>News Scout</b></td><td>Groups ~40 pre-filtered headlines into up to 8 market-moving events and suggests the ticker that best isolates each</td><td>search_news, get_price_history, get_market_snapshot</td><td>ScoutReport (events, backdrop)</td></tr>
+  <tr><td><b>Editor</b></td><td>Writes 3–5 neutral cards (title ≤ 60 chars, one-sentence summary) with cited headline ids</td><td>none</td><td>EditorOutput (cards)</td></tr>
+  <tr><td><b>Fact-checker</b></td><td>Checks every claim against its cited headlines and rejects any hint about direction</td><td>none</td><td>Verdict per card</td></tr>
+  <tr><td><b>Inflection Analyst</b></td><td>Explains each sharp index move with headlines from 30 minutes before to 5 after, or answers "no clear news cause"</td><td>get_minute_bars, search_news</td><td>Attribution + confidence</td></tr>
+  <tr><td><b>Coach</b></td><td>After the close: what happened, why, whether the news drove it, and one testable rule. On request: personal feedback on a missed bet</td><td>get_price_history, get_inflections</td><td>PostMortem / CoachNote</td></tr>
+  <tr><td><b>Moderator</b></td><td>Approves, flags or rejects community posts after a code filter</td><td>none</td><td>approve / flag / reject + reason</td></tr>
+</table>
+<p><b>Organization.</b> A pipeline, not a free-form team: each agent hands a typed Pydantic object to the next step, and code decides what runs when. The only loop is a single Editor retry for cards the Fact-checker failed. Agents that read untrusted text (Editor, Fact-checker, Moderator, personal Coach) get no tools, so an injected instruction has nothing to act with. The tools that do exist live on one read-only FastMCP server.</p>
+<p><b>Model choice.</b> Every agent uses <code>gpt-6-luna</code> through Portkey, the only model allowed on the course key. The tasks are short, structured and well-specified, which suits a small, cheap model. Static prompts sit first and carry a prompt-cache breakpoint, so repeated calls read them at the cached price.</p>
+
+<h3>One real run, step by step (morning of Oct 22, round for Oct 23)</h3>
+<table>
+  <tr><th>#</th><th>Step</th><th>What happened</th><th class="n">Tokens in / cached / out</th><th class="n">Cost</th></tr>
+  <tr><td>1</td><td>News + pre-filter (code)</td><td>259 headlines in the window → 40 de-duplicated, scored candidates</td><td class="n">0</td><td class="n">$0</td></tr>
+  <tr><td>2</td><td>News Scout</td><td>4 events: Iran tanker damage (geopolitics, USO), Meta earnings and AI spending (company, META), chip-stock outlook (sector, SMH), Tesla earnings (company, TSLA). Backdrop: "S&amp;P 500 futures down 1.49%, Nasdaq futures down 3.02%, VIX up 15%."</td><td class="n">9,179 / 4,059 / 1,276</td><td class="n">$0.00131</td></tr>
+  <tr><td>3</td><td>Editor</td><td>4 draft cards, e.g. "Meta reports negative free cash flow amid AI spending — <i>Meta shares fell 7%</i>…"</td><td class="n">1,695 / 0 / 926</td><td class="n">$0.00067</td></tr>
+  <tr><td>4</td><td>Fact-checker</td><td><b>Failed 2 of 4:</b> "'Shares fell 7%' is a market-direction hint" (Meta) and "'Shares fell' is a market-direction hint" (Tesla)</td><td class="n">976 / 0 / 392</td><td class="n">$0.00029</td></tr>
+  <tr><td>5</td><td>Editor retry</td><td>Rewrote both: "Meta's AI spending pushed free cash flow negative, according to the headline."</td><td class="n">1,874 / 0 / 484</td><td class="n">$0.00047</td></tr>
+  <tr><td>6</td><td>Fact-checker retry</td><td>Both rewritten cards passed</td><td class="n">742 / 0 / 168</td><td class="n">$0.00016</td></tr>
+  <tr><td>7</td><td>Publish (code)</td><td>4 cards with Flat bands from 20-day volatility (USO ±0.39%, SMH ±0.33%, META ±0.55%, TSLA ±0.43%), base-rate odds and charts</td><td class="n">0</td><td class="n">$0</td></tr>
+  <tr><td></td><td><b>Total</b></td><td></td><td class="n"><b>14,466 / 4,059 / 3,246</b></td><td class="n"><b>$0.0029</b></td></tr>
+</table>
+<div class="row">
+  <figure><img src="img/trace.jpg" alt="Pipeline trace"><figcaption>Figure 2. The app's own trace of this run (Under the Hood → Pipeline runs): each step's output, tokens, cost and latency.</figcaption></figure>
+  <figure class="phone"><img src="img/today.jpg" alt="Today screen"><figcaption>Figure 3. The published round on a phone. The Up / Flat / Down buttons show crowd share and payout; the header shows the daily mission.</figcaption></figure>
+</div>
+<p>In the evening the code settles the round from the official open and close, the scan finds sharp moves in 1-minute bars, the Analyst attributes them, and the Coach explains each card. Figure 4 shows the result a player sees for a past card.</p>
+<div class="row">
+  <figure class="phone"><img src="img/replay_daily.jpg" alt="Result with lesson"><figcaption>Figure 4. A settled card: the player's pick, the real move (+4.28%), League Points, and the Coach's rule (saved with "+ Rule"). United rose despite cutting guidance — the Coach flags that the headline did not drive the close.</figcaption></figure>
+  <figure class="phone"><img src="img/replay_bigmove.jpg" alt="Big move replay"><figcaption>Figure 5. A "Big move" replay: a real CNBC headline at 14:43 ET on Oct 21 and the S&amp;P 500's −0.38% move in the next 15 minutes, attributed by the Inflection Analyst.</figcaption></figure>
+</div>
+
+<!-- 5. Tokenomics -->
+<h2>4. Tokenomics</h2>
+<p class="lead">Almost all AI cost is a fixed daily cost shared by every player, so cost per user falls as the app grows.</p>
+<p>Every model call is written to an <code>llm_calls</code> table (input, cached input, output tokens, cost, latency), and the app shows the totals on its own Usage page (Figure 6). All numbers below come from {{CALLS}} real calls between Sept 28 and Oct 22, priced at the course rates for gpt-6-luna: $0.10 per 1M input tokens, $0.01 cached, $0.125 cache write, $0.50 output.</p>
+<div class="kpis">
+  <div class="kpi"><b>{{MORNING_TOK}}</b><span>tokens per morning run (avg of {{MORNING_RUNS}})</span></div>
+  <div class="kpi"><b>${{MORNING_COST}}</b><span>per morning run</span></div>
+  <div class="kpi"><b>${{DAY_COST}}</b><span>shared cost per trading day</span></div>
+  <div class="kpi"><b>${{PER_USER_MONTH}}</b><span>per active player per month</span></div>
+</div>
+<table>
+  <tr><th>Agent</th><th class="n">Calls</th><th class="n">Avg input</th><th class="n">Avg cached</th><th class="n">Avg output</th><th class="n">Avg cost</th><th>Scales with</th></tr>
+  {{AGENT_ROWS}}
+</table>
+<h3>Cost per run, per user and at scale</h3>
+<p>One trading day = one morning run (avg {{MORNING_TOK}} tokens, ${{MORNING_COST}}) + one evening run (avg {{EVENING_TOK}} tokens, ${{EVENING_COST}}) = <b>${{DAY_COST}} per day</b>, shared by all players. Per player, only on-demand coaching and moderation add cost: measured at ${{PER_USER_DAY}} per active player-day. With 21 trading days a month:</p>
+<table>
+  <tr><th>Players</th><th class="n">Monthly AI cost</th><th class="n">Per player per month</th></tr>
+  {{SCALE_ROWS}}
+</table>
+<p>Even a 10,000-member brokerage education program would cost about ${{COST_10K}} a month in model fees. At that scale the binding costs are hosting and moderation staff, not tokens.</p>
+<figure><img src="img/usage.jpg" alt="Usage page" style="max-width:520px"><figcaption>Figure 6. The app's Usage page: measured calls, tokens, cost, savings from caching, the daily budget bar and the scale model.</figcaption></figure>
+
+<h3>What I did to keep cost down</h3>
+<ol>
+  <li><b>Deterministic orchestration.</b> Python, not an LLM "boss", sequences agents: no tokens spent on routing.</li>
+  <li><b>Code pre-filter.</b> Keyword scoring and de-duplication cut ~{{PREFILTER_IN}} headlines to ~{{PREFILTER_KEPT}} before the Scout sees them.</li>
+  <li><b>Prompt caching.</b> Static instructions first, with a cache breakpoint: {{CACHED}} input tokens were read from cache, saving ${{CACHE_SAVED}} ({{CACHE_PCT}}% of total spend so far).</li>
+  <li><b>Shared explanations.</b> One post-mortem per card serves every player; personal coaching runs only when a player taps "Ask Coach".</li>
+  <li><b>Zero-token features.</b> Settlement, payouts, League Points, tiers, the inflection scan, missions and the live tracker are plain code.</li>
+  <li><b>Small model, short outputs.</b> gpt-6-luna with typed outputs and length limits (titles ≤ 60 chars, one-sentence summaries).</li>
+</ol>
+<h3>Did cutting cost hurt quality? (A/B test of the pre-filter)</h3>
+<p>I ran the real morning pipeline on the same past days twice — once with the pre-filter, once sending every headline in the window (up to 300) — and compared tokens and the Fact-checker pass rate.</p>
+{{AB_TABLE}}
+<p>{{AB_SUMMARY}}</p>
+
+<!-- 6. Safety -->
+<h2>5. Safety</h2>
+<p class="lead">The risks that matter here: poisoned text (news or posts) steering an agent, invented facts or answer leaks on a card, runaway agents, overspending, and cheating on bets.</p>
+<table>
+  <tr><th>Risk</th><th>Defense built</th></tr>
+  <tr><td>Prompt injection in news</td><td>Headlines that look like instructions are quarantined in code before any model sees them; all untrusted text is fenced as data; agents reading it have no tools; the model provider's own content filter is a further layer.</td></tr>
+  <tr><td>Prompt injection / spam in posts</td><td>Code rule filter (injection, links, all-caps), then the Moderator agent; posts fail closed (held) if moderation is unavailable.</td></tr>
+  <tr><td>Invented facts</td><td>Fact-checker verifies every claim against the cited headlines; failed cards get one rewrite, then are dropped.</td></tr>
+  <tr><td>Answer leakage</td><td>Direction-word check in code plus the Fact-checker. Across all runs it failed {{FC_FAIL}} of {{FC_TOTAL}} draft cards ({{FC_PCT}}%), e.g. "Meta shares fell 7%".</td></tr>
+  <tr><td>History leak</td><td>Archive headlines often carry only a date. History runs cut the news window at midnight ET and drop headlines that name the trade date — added after I caught a real leak in testing.</td></tr>
+  <tr><td>Runaway agents</td><td>Max 8 model calls and 12 tool calls per agent run.</td></tr>
+  <tr><td>Overspending</td><td>Daily token caps (600k for all agents, 40k per player); manual pipeline runs rate-limited to one per 30 minutes; when a cap trips, AI features pause and the game keeps working.</td></tr>
+  <tr><td>Cheating / bad settlement</td><td>Server-side 09:25 ET lock; settlement in code from official prices; a missing price voids the card and refunds stakes.</td></tr>
+  <tr><td>Financial-advice framing</td><td>Points only, no cash value; agents explain the past and never recommend trades; "education only" notice on every page.</td></tr>
+</table>
+<h3>Defenses tested with real attacks</h3>
+<p>The red-team suite (<code>python tests/safety/run_redteam.py</code>) sends real attacks to the real code and agents. Result: <b>{{RT_PASSED}}/{{RT_TOTAL}} defenses held.</b></p>
+<table>
+  <tr><th>Attack</th><th>Defense</th><th>Result</th></tr>
+  {{RT_ROWS}}
+</table>
+<div class="row">
+  <figure class="phone"><img src="img/safety_block.jpg" alt="Blocked injection post"><figcaption>Figure 7. A prompt-injection post blocked by the code filter before any model call; only the author can see it.</figcaption></figure>
+  <figure class="phone"><img src="img/safety_log.jpg" alt="Safety log"><figcaption>Figure 8. The Safety log: every defense that fired, including the budget breaker, the agent-loop limit and a rejected late bet.</figcaption></figure>
+</div>
+<p><b>A false positive I found and fixed.</b> The safety log showed a CNBC/TradingView headline quarantined as an injection because "Says <b>Dan</b> Niles" matched a case-insensitive jailbreak keyword ("DAN"). I replaced that pattern with the full phrase "do anything now". The log is how I found it.</p>
+
+<!-- 7. Impact -->
+<h2>6. Impact</h2>
+<p>The app has run on real data for four weeks: <b>{{ROUNDS}} rounds</b> from {{FIRST}} to {{LAST}}, {{SETTLED}} settled daily cards and {{HEADLINES}} stored headlines, at a total AI cost of ${{TOTAL_COST}}.</p>
+<h3>What the data already teaches</h3>
+<ul>
+  <li><b>News rarely explains the day by itself.</b> The Coach judged that the card's own news drove the move in only {{DRV_NEWS}} of {{DRV_TOTAL}} settled cards; "partly" in {{DRV_PARTLY}}; and something else (usually a market-wide move) in {{DRV_ELSE}}. This is exactly the lesson the project is about: a headline-driven bet is often a bet on the market, not on the news.</li>
+  <li><b>The odds are honest.</b> Outcomes were Up {{OUT_UP}}, Flat {{OUT_FLAT}}, Down {{OUT_DOWN}}, against {{EXP_UP}} / {{EXP_FLAT}} / {{EXP_DOWN}} expected from the historical base rates the app uses to seed its pools.</li>
+  <li><b>Attribution stays honest.</b> Of {{INFL_TOTAL}} sharp intraday moves, the Analyst gave a medium-confidence cause for {{INFL_MED}} and answered "no clear cause" for {{INFL_NONE}} rather than inventing one.</li>
+</ul>
+<h3>Time and cost versus today</h3>
+<table>
+  <tr><th></th><th>Today (news reading)</th><th>Beating the Wall Street</th><th>Source</th></tr>
+  <tr><td>Daily time to a market briefing</td><td>30–60 min, scattered</td><td>About 5 minutes for 3–5 cards</td><td>My own habit vs. app use; to confirm with pilot users</td></tr>
+  <tr><td>Feedback on a call</td><td>None, or weeks later</td><td>Same day at 4:10 PM, with the reason</td><td>App design (settlement job)</td></tr>
+  <tr><td>Record of reasoning</td><td>None</td><td>Journal of every call + scored rulebook</td><td>App</td></tr>
+  <tr><td>Cost of the AI per player</td><td>—</td><td>${{PER_USER_MONTH}} / month at 10,000 players</td><td>Measured (Section 4)</td></tr>
+</table>
+<div class="callout warn">
+  <b>Real users — {{PILOT_STATUS}}</b>
+  <p>{{PILOT_TEXT}}</p>
+</div>
+<p><b>For an organization.</b> A university investment club or a brokerage's investor-education team could run this for 100 members for about ${{COST_100}} a month in model fees, plus hosting. Leagues (next step) would let a club run its own weekly competition.</p>
+
+<!-- 8. Limits + next steps -->
+<h2>7. Limits and next steps</h2>
+<p><b>What does not work yet</b></p>
+<ul>
+  <li><b>It needs to be running.</b> Rounds are built and settled only while the app runs; there is no hosted version yet, so players must use the computer it runs on.</li>
+  <li><b>Thin crowd.</b> With few players the odds come mostly from the house seed (historical base rates), so the "beat the crowd" mechanic is weak until more people play.</li>
+  <li><b>Historical attribution is coarse.</b> Free news archives often have date-only timestamps, so past big moves rarely get a confident cause. Live RSS polling fixes this going forward.</li>
+  <li><b>Daily moves are noisy.</b> One day's open-to-close move is mostly market-wide; a single card is weak evidence of skill. Tiers need many calls to mean something.</li>
+  <li><b>Data dependency.</b> Prices come from Yahoo Finance's public chart endpoint, which is unofficial and could change.</li>
+</ul>
+<p><b>With another month</b></p>
+<ol>
+  <li>Host it (Render or Railway) with reminders at 6:00 AM ("round open") and 4:15 PM ("results are in").</li>
+  <li>Private leagues with invite codes, for clubs and friend groups.</li>
+  <li>"Your pattern" insights from bet history (e.g. "you pick Up 78% of the time").</li>
+  <li>Swipe-to-bet on mobile and a weekly season with leaderboard resets.</li>
+  <li>Score rules across all players, so the best community rules surface automatically.</li>
+</ol>
+<p class="muted">Education only — not investment advice. Points have no cash value. Every number in this report comes from the app's database (<code>scripts/report_stats.py</code>), its tests, or is labeled as my own estimate.</p>
+</main>
+</body>
+</html>

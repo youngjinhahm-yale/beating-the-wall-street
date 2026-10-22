@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beating the Wall Street — Slides</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css">
+<style>
+  :root { --r-main-font: "Segoe UI", Inter, system-ui, sans-serif; --r-heading-font: "Segoe UI", Inter, system-ui, sans-serif;
+          --r-heading-color: #14182b; --r-main-color: #14182b; --r-link-color: #4f46e5; --r-main-font-size: 30px; }
+  .reveal h1, .reveal h2 { font-weight: 800; letter-spacing: -.02em; text-transform: none; }
+  .reveal h2 { font-size: 1.45em; margin-bottom: .5em; }
+  .reveal section { text-align: left; }
+  .hero { background: linear-gradient(120deg,#4f46e5,#7c3aed 55%,#db2777); color: #fff; border-radius: 28px; padding: 60px 56px; }
+  .hero h1 { color: #fff; font-size: 2.2em; line-height: 1.05; margin: 0 0 .3em; }
+  .hero p { color: rgba(255,255,255,.92); margin: .2em 0; }
+  .muted { color: #8c94ab; font-size: .7em; }
+  .big { font-size: 1.6em; font-weight: 800; letter-spacing: -.02em; }
+  .cols { display: flex; gap: 32px; align-items: center; }
+  .cols > div { flex: 1; }
+  .phones { display: flex; gap: 18px; justify-content: center; }
+  .phones img { height: 560px; border-radius: 22px; border: 1px solid #e4e8f2; box-shadow: 0 10px 30px rgba(79,70,229,.15); margin: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
+  .kpi { background: #eef0ff; border-radius: 18px; padding: 20px 22px; }
+  .kpi b { display: block; font-size: 1.6em; color: #4f46e5; letter-spacing: -.02em; }
+  .kpi span { font-size: .6em; color: #4b5571; font-weight: 600; }
+  .reveal ul { margin-left: 1em; } .reveal li { margin: .25em 0; }
+  .tag { display: inline-block; background: #eef0ff; color: #4f46e5; border-radius: 999px; padding: 2px 14px; font-size: .55em; font-weight: 700; }
+  .reveal table { font-size: .55em; } .reveal table th { background: #f5f7fc; }
+  .svgbox svg { width: 100%; height: auto; max-height: 600px; }
+  .pick { display: inline-block; border-radius: 14px; padding: 8px 22px; font-weight: 800; margin-right: 10px; }
+  .up { background: #e3f8ee; color: #10b26c; } .flat { background: #eef1f8; color: #5b6b8c; } .down { background: #ffe9ec; color: #f0445a; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section>
+  <div class="hero">
+    <h1>Beating the<br>Wall Street</h1>
+    <p style="font-size:1.1em">Read the news. Call <b>Up</b>, <b>Flat</b> or <b>Down</b>. Beat the crowd.</p>
+    <p style="margin-top:1em">Youngjin Hahm · MGT 409 Final Project · Oct 2026</p>
+  </div>
+</section>
+
+<section>
+  <h2>Retail investors never build a learning curve</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>We trade on <b>headlines and gut feeling</b></li>
+        <li>No record of <i>why</i> → a win teaches nothing, a loss is "bad luck"</li>
+        <li>Institutions write rules, review outcomes, improve</li>
+        <li>Studying alone is passive — most people quit</li>
+      </ul>
+    </div>
+    <div><div class="big">30–60 min</div><p class="muted">of daily news reading that never becomes a reusable lesson (my own habit)</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What is new</h2>
+  <ul>
+    <li><b>Commit before the outcome</b> — bets lock at 9:25 AM ET, settle on the real open→close</li>
+    <li><b>Crowd odds</b> — parimutuel payouts: beating the crowd pays more</li>
+    <li><b>Tiers per news type</b> — Macro, Company, Geopolitics, Sector</li>
+    <li><b>Scored rules</b> — every lesson becomes a rule with a win rate</li>
+  </ul>
+  <p class="muted">Compared with: Investopedia Simulator, Wall Street Survivor, Kalshi / Polymarket, Robinhood, Stocktwits, newsletters, ChatGPT.</p>
+</section>
+
+<section>
+  <h2 style="font-size:1.2em">6 agents, code runs the schedule</h2>
+  <div class="svgbox">{{DIAGRAM}}</div>
+</section>
+
+<section>
+  <h2>The app</h2>
+  <div class="phones">
+    <img src="img/welcome.jpg" alt="Welcome">
+    <img src="img/today.jpg" alt="Today">
+    <img src="img/replay_daily.jpg" alt="Result">
+  </div>
+</section>
+
+<section>
+  <h2>One real run: the Fact-checker at work</h2>
+  <div class="cols">
+    <div>
+      <p>Oct 22 → round for Oct 23</p>
+      <ul style="font-size:.85em">
+        <li>259 headlines → <b>40</b> (code pre-filter)</li>
+        <li>Scout: 4 events (Iran tankers, Meta, chips, Tesla)</li>
+        <li>Editor wrote "Meta <b>shares fell 7%</b>…"</li>
+        <li>Fact-checker: <b>2 of 4 failed</b> — direction hints</li>
+        <li>Editor retry → both pass → published</li>
+      </ul>
+      <p class="big" style="font-size:1.2em">$0.0029 · 14.5k tokens in</p>
+    </div>
+    <div><img src="img/trace.jpg" alt="Trace" style="max-height:560px;border-radius:16px;border:1px solid #e4e8f2"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Cost to run (measured)</h2>
+  <div class="kpis">
+    <div class="kpi"><b>${{MORNING_COST}}</b><span>per morning run</span></div>
+    <div class="kpi"><b>${{DAY_COST}}</b><span>shared cost per trading day</span></div>
+    <div class="kpi"><b>${{COST_10K}}/mo</b><span>for 10,000 players</span></div>
+  </div>
+  <ul style="margin-top:1em;font-size:.85em">
+    <li>Code pre-filter, prompt caching, shared explanations, zero-token game logic</li>
+    <li>A/B: pre-filter cut cost with no drop in Fact-checker pass rate</li>
+  </ul>
+  <p class="muted">{{CALLS}} real calls logged in llm_calls; gpt-6-luna course prices.</p>
+</section>
+
+<section>
+  <h2>Safety: {{RT_PASSED}}/{{RT_TOTAL}} attacks stopped</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:.8em">
+        <li>Injection in posts → code filter + Moderator</li>
+        <li>Injection in news → quarantine + tool-less agents</li>
+        <li>Invented facts / answer leaks → Fact-checker ({{FC_PCT}}% of drafts failed)</li>
+        <li>Runaway agents → max 8 calls per run</li>
+        <li>Overspending → daily token caps; game keeps working</li>
+        <li>Late bets → server-side 9:25 lock</li>
+      </ul>
+    </div>
+    <div><img src="img/safety_block.jpg" alt="Blocked post" style="max-height:540px;border-radius:16px;border:1px solid #e4e8f2"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Impact</h2>
+  <div class="kpis">
+    <div class="kpi"><b>{{ROUNDS}}</b><span>real rounds, {{FIRST}} → {{LAST}}</span></div>
+    <div class="kpi"><b>{{DRV_ELSE}}/{{DRV_TOTAL}}</b><span>moves driven by something other than the card's news</span></div>
+    <div class="kpi"><b>~5 min</b><span>daily briefing vs 30–60 min of reading</span></div>
+  </div>
+  <p style="margin-top:1em;font-size:.8em"><b>Real users:</b> {{PILOT_TEXT}}</p>
+</section>
+
+<section>
+  <h2>What's next</h2>
+  <ul>
+    <li>Host it + reminders at 6:00 AM and 4:15 PM</li>
+    <li>Private leagues for clubs and friends</li>
+    <li>"Your pattern" bias insights</li>
+    <li>Swipe to bet, weekly seasons</li>
+  </ul>
+  <p class="muted" style="margin-top:2em">github.com/youngjinhahm-yale/beating-the-wall-street · Education only, not investment advice</p>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>Reveal.initialize({ hash: true, width: 1280, height: 760, margin: 0.06, transition: 'slide' });</script>
+</body>
+</html>

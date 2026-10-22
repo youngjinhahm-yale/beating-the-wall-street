@@ -1,90 +1,264 @@
 [
   {
-    "day": "2026-09-29",
+    "day": "2026-10-06",
     "prefilter": true,
-    "headlines_to_scout": 24,
-    "input": 10364,
-    "cached": 4962,
-    "output": 3309,
-    "cost": 0.002325295,
-    "cards_drafted": 4,
-    "cards_passed": 3,
-    "published": [
-      "Fed minutes and discussion of 10-year Treasury yields",
-      "Stitch Fix guidance and turnaround outlook",
-      "Iran war and energy-market developments"
-    ],
-    "scout_topics": [
-      "Fed minutes and rising Treasury yields",
-      "Iran war uncertainty and crude oil prices",
-      "Stitch Fix guidance and turnaround outlook"
-    ]
-  },
-  {
-    "day": "2026-09-29",
-    "prefilter": false,
-    "headlines_to_scout": 30,
-    "input": 11554,
-    "cached": 4110,
-    "output": 3510,
-    "cost": 0.002674325,
-    "cards_drafted": 4,
-    "cards_passed": 2,
-    "published": [
-      "Iran conflict and energy-market strategy",
-      "Amphenol Q2 earnings coverage"
-    ],
-    "scout_topics": [
-      "Fed minutes and rising Treasury yields",
-      "Iran-war uncertainty and oil-market disruption",
-      "Amphenol Q2 earnings coverage"
-    ]
-  },
-  {
-    "day": "2026-09-30",
-    "prefilter": true,
-    "headlines_to_scout": 19,
-    "input": 8201,
-    "cached": 5030,
-    "output": 2171,
-    "cost": 0.00149835,
+    "headlines_to_scout": 40,
+    "input": 10483,
+    "cached": 3641,
+    "output": 1834,
+    "cost": 0.0017765600000000004,
     "cards_drafted": 3,
     "cards_passed": 3,
     "published": [
-      "Conference Board consumer confidence report",
-      "Carnival earnings, bookings and guidance update",
-      "Fluence Energy securities class action"
+      "Long-term Treasury yields reach 24-year highs",
+      "September jobs report shifts rate expectations",
+      "Q3 earnings season begins"
     ],
     "scout_topics": [
-      "U.S. consumer confidence weakens",
-      "Fed Bowman remarks and JOLTS labor data",
-      "Carnival reports record bookings and raises guidance",
-      "Fluence Energy faces securities class action"
+      "Long-term Treasury yields reach multi-decade highs",
+      "September jobs report reshapes Fed-rate expectations",
+      "Q3 earnings season begins"
     ]
   },
   {
-    "day": "2026-09-30",
+    "day": "2026-10-06",
     "prefilter": false,
-    "headlines_to_scout": 24,
-    "input": 9506,
-    "cached": 2853,
-    "output": 2553,
-    "cost": 0.002124055,
+    "headlines_to_scout": 165,
+    "input": 25716,
+    "cached": 10140,
+    "output": 3183,
+    "cost": 0.0035845,
     "cards_drafted": 5,
-    "cards_passed": 5,
+    "cards_passed": 3,
     "published": [
-      "Fed inflation measure scheduled for Wednesday",
-      "U.S. restrictions on Canadian imports take effect",
-      "Middle East crude exports reported at 98% of pre-war levels",
-      "Consumer confidence index reaches its lowest level since 2014",
-      "Carnival reports record bookings and updates guidance"
+      "Treasury yields reach 24-year highs",
+      "Gold prices and September jobs report",
+      "Oil markets weigh exports and stock release"
     ],
     "scout_topics": [
-      "Fed\u2019s preferred inflation measure due Wednesday",
-      "U.S. restrictions on Canadian imports take effect",
-      "Middle East crude exports reported near pre-war levels",
-      "Consumer confidence falls to its lowest level since 2014",
-      "Carnival reports record bookings and raises guidance"
+      "Treasury yields reach multi-decade highs amid shifting Fed expectations",
+      "Oil prices respond to higher Middle East exports and a G7 stock release"
+    ]
+  },
+  {
+    "day": "2026-10-07",
+    "prefilter": true,
+    "headlines_to_scout": 40,
+    "input": 12569,
+    "cached": 3731,
+    "output": 2539,
+    "cost": 0.00236271,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "EIA raises oil price forecasts amid Iran disruptions",
+      "Penguin Solutions reports earnings beat and FY 2027 guidance",
+      "FOMC minutes loom alongside market movements"
+    ],
+    "scout_topics": [
+      "Upcoming FOMC minutes",
+      "EIA raises oil price forecasts amid Iran-related supply disruption",
+      "Weak jobs report complicates expectations for a Fed rate hike",
+      "Penguin Solutions reports earnings beat and issues FY 2027 guidance"
+    ]
+  },
+  {
+    "day": "2026-10-07",
+    "prefilter": false,
+    "headlines_to_scout": 204,
+    "input": 29647,
+    "cached": 12185,
+    "output": 3292,
+    "cost": 0.003899425,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "EIA revises oil forecasts amid Iran war",
+      "Marvell updates its FY2028 revenue outlook",
+      "Federal Reserve minutes approach"
+    ],
+    "scout_topics": [
+      "Upcoming Federal Reserve minutes",
+      "Iran-war supply risks lift EIA oil forecasts",
+      "Marvell raises its FY2028 revenue outlook"
+    ]
+  },
+  {
+    "day": "2026-10-08",
+    "prefilter": true,
+    "headlines_to_scout": 40,
+    "input": 11226,
+    "cached": 3737,
+    "output": 1964,
+    "cost": 0.0019186950000000002,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "Fed minutes and Treasury yields",
+      "Samsung forecasts record profit on AI chip demand",
+      "Levi Strauss raises profit guidance, cautious on sales"
+    ],
+    "scout_topics": [
+      "Renewed Iran-war fears and volatile oil prices",
+      "Fed minutes and higher Treasury yields",
+      "Samsung signals strong chip demand from AI",
+      "Levi Strauss raises profit guidance but gives a less optimistic sales outlook",
+      "NY Fed finding on tariff-related goods prices"
+    ]
+  },
+  {
+    "day": "2026-10-08",
+    "prefilter": false,
+    "headlines_to_scout": 167,
+    "input": 28901,
+    "cached": 10543,
+    "output": 3221,
+    "cost": 0.0039755300000000006,
+    "cards_drafted": 6,
+    "cards_passed": 4,
+    "published": [
+      "Iran-war risks coincide with volatile oil trading",
+      "Treasury yields reach fresh 24-year highs",
+      "OpenAI report and AI pricing competition",
+      "Samsung forecasts record third-quarter profit"
+    ],
+    "scout_topics": [
+      "Renewed Iran-war risk and oil-market volatility",
+      "Treasury yields and Fed rate-hike concerns",
+      "OpenAI revenue report and AI-sector competition",
+      "Higher consumer inflation expectations",
+      "Samsung preliminary third-quarter profit forecast"
+    ]
+  },
+  {
+    "day": "2026-10-09",
+    "prefilter": true,
+    "headlines_to_scout": 40,
+    "input": 13505,
+    "cached": 3684,
+    "output": 2565,
+    "cost": 0.00249169,
+    "cards_drafted": 5,
+    "cards_passed": 3,
+    "published": [
+      "Levi Strauss raises profit guidance",
+      "Iran tensions and tanker traffic",
+      "OpenAI revenue report and technology stocks"
+    ],
+    "scout_topics": [
+      "Iran tensions, tanker disruption and changing oil-supply concerns",
+      "OpenAI revenue report and spillover to technology stocks",
+      "Levi Strauss earnings and updated outlook"
+    ]
+  },
+  {
+    "day": "2026-10-09",
+    "prefilter": false,
+    "headlines_to_scout": 177,
+    "input": 28055,
+    "cached": 10830,
+    "output": 2832,
+    "cost": 0.0036277,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "OpenAI revenue report draws attention to chipmakers",
+      "PepsiCo reports earnings and North American delays",
+      "Iran warns of further Hormuz route blockades"
+    ],
+    "scout_topics": [
+      "Iran tensions, tanker risks and oil-supply updates",
+      "Weaker-than-expected OpenAI revenue report",
+      "PepsiCo cuts earnings forecast as North American turnaround takes longer"
+    ]
+  },
+  {
+    "day": "2026-10-15",
+    "prefilter": true,
+    "headlines_to_scout": 40,
+    "input": 14780,
+    "cached": 3628,
+    "output": 3543,
+    "cost": 0.003141605,
+    "cards_drafted": 8,
+    "cards_passed": 4,
+    "published": [
+      "Bank of America reports revenue miss and penalty",
+      "War raises crude-tanker shipping costs",
+      "AI concerns in technology coverage",
+      "Gold, bonds, and dollar in market report"
+    ],
+    "scout_topics": [
+      "September CPI and rate-hike expectations",
+      "Bank earnings, guidance, and regulatory penalty",
+      "Technology shares amid intensifying AI concerns",
+      "Treasury rally, dollar movement, and gold prices",
+      "War-related tanker shipping costs"
+    ]
+  },
+  {
+    "day": "2026-10-15",
+    "prefilter": false,
+    "headlines_to_scout": 154,
+    "input": 23099,
+    "cached": 9576,
+    "output": 3300,
+    "cost": 0.003401685,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "September consumer prices rise 3.7% year over year",
+      "Anthropic reports $16.8 billion in third-quarter revenue",
+      "Bank of America reports revenue miss and $1.2 billion fine"
+    ],
+    "scout_topics": [
+      "U.S. inflation reports and rate repricing",
+      "Anthropic revenue report ahead of IPO",
+      "Oil supply tightness amid tanker attacks and inventory draws",
+      "Major U.S. bank earnings and guidance"
+    ]
+  },
+  {
+    "day": "2026-10-16",
+    "prefilter": true,
+    "headlines_to_scout": 40,
+    "input": 18160,
+    "cached": 8304,
+    "output": 2969,
+    "cost": 0.00274709,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "Hot PPI renews Fed rate concerns",
+      "U.S. military prepares strikes on Iran",
+      "Investors rotate out of AI trade"
+    ],
+    "scout_topics": [
+      "Hot September PPI and renewed Fed-hike concerns",
+      "Concerns about AI spending weigh on technology shares",
+      "U.S. military preparing new strikes on Iran"
+    ]
+  },
+  {
+    "day": "2026-10-16",
+    "prefilter": false,
+    "headlines_to_scout": 181,
+    "input": 26188,
+    "cached": 10971,
+    "output": 2440,
+    "cost": 0.00319706,
+    "cards_drafted": 4,
+    "cards_passed": 3,
+    "published": [
+      "September producer-price inflation reaches 6.3%",
+      "Fuel-oil supply tightness and planned stock releases",
+      "Semtech raises fiscal third-quarter guidance"
+    ],
+    "scout_topics": [
+      "September producer-price inflation runs hot",
+      "Concerns about AI spending weigh on technology shares",
+      "Fuel-oil supply tightness amid conflicts and planned stock releases",
+      "Semtech raises fiscal third-quarter guidance"
     ]
   }
 ]

@@ -6,7 +6,7 @@ import re
 
 INJECTION_PATTERNS = {
     "ignore_instructions": r"\b(ignore|disregard|forget|override)\b.{0,40}\b(instruction|rule|prompt|guideline|previous|above)s?\b",
-    "role_hijack": r"\byou are now\b|\bact as (an?|the)\b|\bdeveloper mode\b|\bjailbreak\b|\bDAN\b",
+    "role_hijack": r"\byou are now\b|\bact as (an?|the)\b|\bdeveloper mode\b|\bjailbreak\b|\bdo anything now\b",
     "prompt_leak": r"\b(reveal|show|print|repeat|output)\b.{0,30}\b(system prompt|your prompt|your instructions|hidden instructions)\b",
     "fake_system": r"(<\|?im_start\|?>|\[/?INST\]|^\s*(system|assistant)\s*:|###\s*(system|instruction))",
     "data_exfil": r"\b(api[_ ]?key|password|other users?'?s? (bets?|data)|all users|database dump)\b",

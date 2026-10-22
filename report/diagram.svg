@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="Segoe UI, Inter, system-ui, sans-serif" font-size="13" role="img" aria-label="Agent architecture">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8c94ab"/></marker>
+  </defs>
+  <rect x="0" y="0" width="760" height="560" fill="#ffffff"/>
+  <text x="24" y="30" font-size="16" font-weight="700" fill="#14182b">Code runs the schedule; AI agents only read, write and judge text</text>
+  <rect x="24" y="44" width="14" height="14" rx="3" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="46" y="56" font-size="12" fill="#4b5571">AI agent (gpt-6-luna via Portkey)</text>
+  <rect x="264" y="44" width="14" height="14" rx="3" fill="#fff" stroke="#8c94ab"/>
+  <text x="286" y="56" font-size="12" fill="#4b5571">Plain code, zero tokens</text>
+
+  <text x="24" y="92" font-weight="700" fill="#8c94ab">MORNING · 06:00 ET</text>
+  <g>
+    <rect x="24" y="102" width="160" height="78" rx="10" fill="#fff" stroke="#8c94ab"/>
+    <text x="36" y="124" font-weight="700" fill="#14182b">News in + pre-filter</text>
+    <text x="36" y="142" font-size="12" fill="#4b5571">RSS + Google News;</text>
+    <text x="36" y="158" font-size="12" fill="#4b5571">~165 → 40 headlines</text>
+    <rect x="208" y="102" width="160" height="78" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="220" y="124" font-weight="700" fill="#14182b">News Scout</text>
+    <text x="220" y="142" font-size="12" fill="#4b5571">Groups headlines into</text>
+    <text x="220" y="158" font-size="12" fill="#4b5571">≤8 market-moving events</text>
+    <rect x="392" y="102" width="160" height="78" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="404" y="124" font-weight="700" fill="#14182b">Editor</text>
+    <text x="404" y="142" font-size="12" fill="#4b5571">Writes 3–5 neutral cards</text>
+    <text x="404" y="158" font-size="12" fill="#4b5571">+ target ticker</text>
+    <rect x="576" y="102" width="160" height="78" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="588" y="124" font-weight="700" fill="#14182b">Fact-checker</text>
+    <text x="588" y="142" font-size="12" fill="#4b5571">Claims vs sources; blocks</text>
+    <text x="588" y="158" font-size="12" fill="#4b5571">hints → Editor retry</text>
+  </g>
+  <g stroke="#8c94ab" stroke-width="1.4" fill="none">
+    <path d="M184 141H206" marker-end="url(#a)"/><path d="M368 141H390" marker-end="url(#a)"/><path d="M552 141H574" marker-end="url(#a)"/>
+    <path d="M656 102V88H472V100" marker-end="url(#a)" stroke-dasharray="4 3"/>
+  </g>
+  <text x="520" y="84" font-size="11" fill="#8c94ab">failed cards</text>
+
+  <rect x="24" y="210" width="712" height="54" rx="10" fill="#f5f7fc" stroke="#8c94ab"/>
+  <text x="380" y="232" text-anchor="middle" font-weight="700" fill="#14182b">Market MCP server (FastMCP) — the agents' only tools, all read-only</text>
+  <text x="380" y="252" text-anchor="middle" font-size="12" fill="#4b5571">get_market_snapshot · get_price_history · search_news · get_minute_bars · get_inflections</text>
+  <g stroke="#8c94ab" stroke-width="1.4" fill="none" stroke-dasharray="4 3">
+    <path d="M288 182V208" marker-start="url(#a)"/>
+    <path d="M472 266V316" marker-end="url(#a)"/><path d="M656 266V316" marker-end="url(#a)"/>
+  </g>
+
+  <text x="24" y="304" font-weight="700" fill="#8c94ab">EVENING · 16:10 ET</text>
+  <g>
+    <rect x="24" y="316" width="160" height="78" rx="10" fill="#fff" stroke="#8c94ab"/>
+    <text x="36" y="338" font-weight="700" fill="#14182b">Lock + settle</text>
+    <text x="36" y="356" font-size="12" fill="#4b5571">Official open/close;</text>
+    <text x="36" y="372" font-size="12" fill="#4b5571">parimutuel pts + LP</text>
+    <rect x="208" y="316" width="160" height="78" rx="10" fill="#fff" stroke="#8c94ab"/>
+    <text x="220" y="338" font-weight="700" fill="#14182b">Inflection scan</text>
+    <text x="220" y="356" font-size="12" fill="#4b5571">Sharp moves in</text>
+    <text x="220" y="372" font-size="12" fill="#4b5571">1-minute index bars</text>
+    <rect x="392" y="316" width="160" height="78" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="404" y="338" font-weight="700" fill="#14182b">Inflection Analyst</text>
+    <text x="404" y="356" font-size="12" fill="#4b5571">Links each move to news,</text>
+    <text x="404" y="372" font-size="12" fill="#4b5571">or "no clear cause"</text>
+    <rect x="576" y="316" width="160" height="78" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="588" y="338" font-weight="700" fill="#14182b">Coach</text>
+    <text x="588" y="356" font-size="12" fill="#4b5571">Why it moved + one</text>
+    <text x="588" y="372" font-size="12" fill="#4b5571">testable rule per card</text>
+  </g>
+  <g stroke="#8c94ab" stroke-width="1.4" fill="none">
+    <path d="M184 355H206" marker-end="url(#a)"/><path d="M368 355H390" marker-end="url(#a)"/><path d="M552 355H574" marker-end="url(#a)"/>
+  </g>
+
+  <text x="24" y="430" font-weight="700" fill="#8c94ab">ANY TIME</text>
+  <g>
+    <rect x="24" y="442" width="160" height="62" rx="10" fill="#fff" stroke="#8c94ab"/>
+    <text x="36" y="464" font-weight="700" fill="#14182b">Post → rule filter</text>
+    <text x="36" y="482" font-size="12" fill="#4b5571">Injection / spam regex</text>
+    <rect x="208" y="442" width="160" height="62" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="220" y="464" font-weight="700" fill="#14182b">Moderator</text>
+    <text x="220" y="482" font-size="12" fill="#4b5571">approve / flag / reject</text>
+    <rect x="392" y="442" width="160" height="62" rx="10" fill="#fff" stroke="#8c94ab"/>
+    <text x="404" y="464" font-weight="700" fill="#14182b">Missed bet</text>
+    <text x="404" y="482" font-size="12" fill="#4b5571">player taps Ask Coach</text>
+    <rect x="576" y="442" width="160" height="62" rx="10" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="588" y="464" font-weight="700" fill="#14182b">Personal Coach</text>
+    <text x="588" y="482" font-size="12" fill="#4b5571">feedback + rule</text>
+  </g>
+  <g stroke="#8c94ab" stroke-width="1.4" fill="none">
+    <path d="M184 473H206" marker-end="url(#a)"/><path d="M552 473H574" marker-end="url(#a)"/>
+  </g>
+  <text x="24" y="540" font-size="12" fill="#8c94ab">Every agent call is logged (tokens, cost) and stops at the daily token cap. Agents that read untrusted text have no tools.</text>
+</svg>

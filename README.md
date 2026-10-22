@@ -11,6 +11,9 @@ and Sector news, show where a player's edge really is. High-tier players unlock 
 
 *Education only. Not investment advice. Points have no cash value.*
 
+**Deliverables:** [`report.html`](report.html) (final report) and [`slides.html`](slides.html) (reveal.js deck) are in the repo root
+and open by double-click. They are built from `report/` with `python scripts/report_stats.py && python scripts/build_report.py`.
+
 ---
 
 ## Run it (about 3 minutes)
@@ -146,7 +149,8 @@ backend/       FastAPI app (main.py), game engine (game.py), pipelines (pipeline
 market_mcp/    FastMCP server: the agents' only tools
 frontend/      React + Vite + TypeScript source; dist/ is the built site served by FastAPI
 data/          sample.db (committed); live.db (local, git-ignored)
-scripts/       run_pipeline.py, build_history.py, make_sample_db.py
+scripts/       run_pipeline.py, build_history.py, make_sample_db.py, ab_prefilter.py, report_stats.py, build_report.py
+report/        report and slide sources, screenshots, diagram, stats.json
 tests/         pytest unit tests; safety/run_redteam.py
 ```
 
