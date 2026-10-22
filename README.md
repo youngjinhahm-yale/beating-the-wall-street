@@ -105,7 +105,7 @@ on demand missed call -> personal Coach note (per-user budget)
   (structured) outputs. Static prompts carry a cache breakpoint so repeat calls read them at the cached price.
 * **Tools:** a FastMCP server (`market_mcp/server.py`) exposes read-only market and news tools. Agents that read
   untrusted text (Editor, Fact-checker, Moderator, personal Coach) get no tools at all.
-* **Data:** all free and key-less: Yahoo Finance via `yfinance` (daily and 1-minute bars), publisher RSS feeds, Google
+* **Data:** all free and key-less: Yahoo Finance's public chart endpoint (daily and 1-minute bars, plain JSON), publisher RSS feeds, Google
   News RSS search.
 
 ### Game rules in one place
@@ -142,7 +142,7 @@ python tests/safety/run_redteam.py
 
 ```
 backend/       FastAPI app (main.py), game engine (game.py), pipelines (pipeline.py), agents/ + prompts,
-               market.py (yfinance + calendar), news.py, inflection.py, community.py, llm.py (budget + usage log)
+               market.py (Yahoo prices + calendar), news.py, inflection.py, community.py, llm.py (budget + usage log)
 market_mcp/    FastMCP server: the agents' only tools
 frontend/      React + Vite + TypeScript source; dist/ is the built site served by FastAPI
 data/          sample.db (committed); live.db (local, git-ignored)

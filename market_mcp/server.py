@@ -1,6 +1,6 @@
 """Market MCP server: the only tools the agents can call.
 
-Every tool is read-only. Prices come from yfinance (cached in SQLite) and news from
+Every tool is read-only. Prices come from Yahoo Finance (cached in SQLite) and news from
 the headlines table, so an agent can look things up but can never change the game.
 Results are compact on purpose: fewer tokens per tool call.
 """

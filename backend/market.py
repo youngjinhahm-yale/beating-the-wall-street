@@ -1,4 +1,4 @@
-"""Free market data (yfinance), the trading calendar, Flat bands and base rates.
+"""Free market data (Yahoo Finance chart API), the trading calendar, Flat bands and base rates.
 
 Everything numeric in the game comes from here or from the database, never from a model.
 """
@@ -75,42 +75,59 @@ def target_trade_date(now: datetime | None = None) -> date:
     return next_trading_day(today)
 
 
-# --- yfinance wrappers ---------------------------------------------------------------
+# --- Yahoo Finance (plain JSON) -------------------------------------------------------------
 
-def _yf():
-    import yfinance as yf  # imported lazily: slow import, and sample mode may never need it
-    return yf
+YAHOO_CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+_HEADERS = {"User-Agent": "Mozilla/5.0 (BeatingTheWallStreet educational app)"}
+
+
+def _chart(ticker: str, interval: str, start: datetime, end: datetime) -> dict | None:
+    """Yahoo Finance's public chart endpoint (no key). Plain requests + JSON: no numpy/pandas needed."""
+    import requests
+    params = {"interval": interval, "period1": int(start.timestamp()), "period2": int(end.timestamp()),
+              "includePrePost": "false"}
+    r = requests.get(YAHOO_CHART.format(ticker=requests.utils.quote(ticker, safe="")), params=params,
+                     headers=_HEADERS, timeout=20)
+    r.raise_for_status()
+    res = (r.json().get("chart") or {}).get("result") or []
+    return res[0] if res else None
+
+
+def _rows(res: dict | None) -> list[tuple[int, int, float, float, float, float, float]]:
+    """(timestamp, gmt offset, open, high, low, close, volume), skipping empty bars."""
+    if not res or not res.get("timestamp"):
+        return []
+    q = res["indicators"]["quote"][0]
+    off = int(res.get("meta", {}).get("gmtoffset") or 0)
+    out = []
+    for i, t in enumerate(res["timestamp"]):
+        o, h, lo, c = q["open"][i], q["high"][i], q["low"][i], q["close"][i]
+        if None in (o, h, lo, c):
+            continue
+        out.append((t, off, float(o), float(h), float(lo), float(c), float((q.get("volume") or [0])[i] or 0)))
+    return out
 
 
 def fetch_daily(ticker: str, days: int = 120) -> list[dict]:
-    df = _yf().download(ticker, period=f"{days}d", interval="1d", progress=False, auto_adjust=False)
-    if df is None or df.empty:
-        return []
-    if hasattr(df.columns, "levels"):
-        df.columns = df.columns.get_level_values(0)
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=int(days * 1.5) + 5)  # calendar days covering `days` sessions
     out = []
-    for idx, r in df.iterrows():
-        if any(v != v for v in (r["Open"], r["Close"])):  # NaN
-            continue
-        out.append({"date": idx.date().isoformat(), "open": float(r["Open"]), "high": float(r["High"]),
-                    "low": float(r["Low"]), "close": float(r["Close"])})
-    return out
+    for t, off, o, h, lo, c, _ in _rows(_chart(ticker, "1d", start, end)):
+        # The session date in the exchange's own time zone.
+        d = datetime.fromtimestamp(t + off, timezone.utc).date()
+        out.append({"date": d.isoformat(), "open": o, "high": h, "low": lo, "close": c})
+    return out[-days:]
+
+
+def _bars(res: dict | None) -> list[dict]:
+    return [{"ts": datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="seconds"), "open": o, "high": h,
+             "low": lo, "close": c, "volume": v} for t, _, o, h, lo, c, v in _rows(res)]
 
 
 def fetch_minute_bars(ticker: str, period: str = "5d") -> list[dict]:
-    df = _yf().download(ticker, period=period, interval="1m", progress=False, auto_adjust=False)
-    if df is None or df.empty:
-        return []
-    if hasattr(df.columns, "levels"):
-        df.columns = df.columns.get_level_values(0)
-    out = []
-    for idx, r in df.iterrows():
-        if r["Close"] != r["Close"]:
-            continue
-        ts = idx.to_pydatetime().astimezone(timezone.utc).isoformat(timespec="seconds")
-        out.append({"ts": ts, "open": float(r["Open"]), "high": float(r["High"]), "low": float(r["Low"]),
-                    "close": float(r["Close"]), "volume": float(r.get("Volume", 0) or 0)})
-    return out
+    days = int(period.rstrip("d") or 5)
+    end = datetime.now(timezone.utc)
+    return _bars(_chart(ticker, "1m", end - timedelta(days=days), end))
 
 
 def fetch_minute_bars_range(ticker: str, start: date, end: date) -> list[dict]:
@@ -119,17 +136,9 @@ def fetch_minute_bars_range(ticker: str, start: date, end: date) -> list[dict]:
     cur = start
     while cur <= end:
         stop = min(cur + timedelta(days=7), end + timedelta(days=1))
-        df = _yf().download(ticker, start=cur.isoformat(), end=stop.isoformat(), interval="1m", progress=False,
-                            auto_adjust=False)
-        if df is not None and not df.empty:
-            if hasattr(df.columns, "levels"):
-                df.columns = df.columns.get_level_values(0)
-            for idx, r in df.iterrows():
-                if r["Close"] != r["Close"]:
-                    continue
-                out.append({"ts": idx.to_pydatetime().astimezone(timezone.utc).isoformat(timespec="seconds"),
-                            "open": float(r["Open"]), "high": float(r["High"]), "low": float(r["Low"]),
-                            "close": float(r["Close"]), "volume": float(r.get("Volume", 0) or 0)})
+        a = datetime.combine(cur, time(0), tzinfo=timezone.utc)
+        b = datetime.combine(stop, time(0), tzinfo=timezone.utc)
+        out += _bars(_chart(ticker, "1m", a, b))
         cur = stop
     return out
 

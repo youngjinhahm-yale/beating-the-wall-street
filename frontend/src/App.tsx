@@ -109,7 +109,7 @@ export default function App() {
 
       <footer className="footer">
         Education only - not investment advice. Points have no cash value and can't be bought, sold or withdrawn.
-        Market data: Yahoo Finance via yfinance. News: publisher RSS feeds and Google News. AI: gpt-6-luna.
+        Market data: Yahoo Finance. News: publisher RSS feeds and Google News. AI: gpt-6-luna.
       </footer>
 
       {!welcome && <nav className="tabbar" aria-label="Main (mobile)">
